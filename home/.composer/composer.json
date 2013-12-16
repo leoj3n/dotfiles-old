@@ -1,0 +1,18 @@
+{
+	"minimum-stability": "dev",
+	"config": {
+		"vendor-dir": "vendor",
+		"bin-dir": "bin"
+	},
+	"require": {
+		"wp-cli/wp-cli": "dev-master",
+		"d11wtq/boris": "dev-master",
+		"wp-cli/server-command": "dev-master"
+	},
+	"repositories": {
+		"wp-cli": {
+			"type": "composer",
+			"url": "http://wp-cli.org/package-index/"
+		}
+	}
+}

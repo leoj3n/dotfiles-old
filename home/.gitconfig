@@ -1,0 +1,24 @@
+[user]
+  name = Joel Kuzmarski
+  email = leoj3n@gmail.com
+[credential]
+  helper = osxkeychain
+[alias]
+  # http://gitready.com/advanced/2011/10/21/ribbon-and-catchup-reading-new-commits.html
+  ribbon = tag --force _ribbon origin/master
+  catchup = log --patch --reverse --topo-order _ribbon..origin/master
+	today = !git log --since=midnight --author=\"$(git config user.name)\" --oneline
+[color]
+  ui = auto
+[core]
+  excludesfile = /Users/leoj/.gitignore_global
+  trustctime = false
+	ignorecase = false
+[push]
+  default = simple
+[merge]
+  tool = vimdiff
+[github]
+	user = leoj3n
+[ghi]
+	token = 9e26cd7657a712d70e99b411cdab05454f3521ce
