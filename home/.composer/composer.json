@@ -7,7 +7,7 @@
 	"require": {
 		"wp-cli/wp-cli": "dev-master",
 		"d11wtq/boris": "dev-master",
-		"wp-cli/server-command": "dev-master"
+		"cordoval/gush": "dev-master"
 	},
 	"repositories": {
 		"wp-cli": {

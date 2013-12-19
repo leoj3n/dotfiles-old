@@ -4,3 +4,9 @@
 [submodule "inside/.zprezto"]
 	path = inside/.zprezto
 	url = git://github.com/sorin-ionescu/prezto.git
+[submodule "nowhere/play-button-itunes-patch"]
+	path = nowhere/play-button-itunes-patch
+	url = git://github.com/thebitguru/play-button-itunes-patch.git
+[submodule "nowhere/vit"]
+	path = nowhere/vit
+	url = git://tasktools.org/vit.git

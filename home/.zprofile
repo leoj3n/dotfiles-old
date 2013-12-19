@@ -7,24 +7,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zprofile" ]]; then
 fi
 
 #
-# Ruby Version Manager
-#
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-#
-# Perlbrew
-#
-
-source "$HOME/perl5/perlbrew/etc/bashrc"
-
-#
-# z
-#
-
-source "$(brew --prefix)/etc/profile.d/z.sh"
-
-#
 # Editors
 #
 
@@ -44,18 +26,45 @@ export GTK_PATH='/usr/local/lib/gtk-2.0'
 # Go
 #
 
-export GOPATH="$HOME/.go"
+export GOPATH="${HOME}/.go"
 
+#
+# Python
+#
+
+export PYTHONPATH="/usr/local/lib/python2.7/site-packages:${PYTHONPATH}"
+
+#
 # Set the list of directories that Zsh searches for programs.
+#
+
 path=(
-  /Applications/Sublime\ Text.app/Contents/SharedSupport/bin
-  $HOME/bin
   /opt/local/bin
   # /usr/local/{bin,sbin} # Homebrew wants /usr/local/bin at front of $PATH...
-  /usr/local/sbin         # We do that in /etc/paths and keep here /sbin
+                          # We do that in /etc/paths
   /usr/local/mysql/bin
-  $HOME/.composer/bin
-  $HOME/.rvm/bin
-  $GOPATH/bin
-  $path
+  $(brew --prefix josegonzalez/php/php54)/bin
+  ${HOME}/.composer/bin
+  ${GOPATH}/bin
+  /Applications/Sublime\ Text.app/Contents/SharedSupport/bin
+  ${HOME}/bin
+  ${path}
 )
+
+#
+# z
+#
+
+source "$(brew --prefix)/etc/profile.d/z.sh"
+
+#
+# Perlbrew
+#
+
+source "${HOME}/perl5/perlbrew/etc/bashrc"
+
+#
+# Ruby Version Manager
+#
+
+source "${HOME}/.rvm/scripts/rvm"

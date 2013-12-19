@@ -63,7 +63,7 @@
 
 defaults write com.zibity.broomstick BMIOloginitem "Yes"
 
-defaults write com.zibity.broomstick apporder "FreeSpace Tab|Gas Mask|Flux|Caffeine|Spirited Away|Memory Clean|Freezer|Dropbox|Google Drive|SparkleShare|Gitifier|Feeds|TotalSpaces|SlimBatteryMonitor|WhiteClock"
+defaults write com.zibity.broomstick apporder "FreeSpace Tab|Gas Mask|Flux|Caffeine|Spirited Away|WhatPulse|Memory Clean|Freezer|Dropbox|Gitifier|Feeds|TotalSpaces|SlimBatteryMonitor|WhiteClock"
 
 defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
@@ -184,7 +184,7 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.500000:489.000000</string>
+				<string>318.500000:489.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -353,7 +353,7 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.500000:306.000000</string>
+				<string>318.500000:306.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -452,7 +452,7 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.500000:123.000000</string>
+				<string>318.500000:123.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Launch Application.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -462,19 +462,19 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>5C49977C-0A9E-4910-A6BC-E8DF4B0CBF59</key>
-		<dict>
-			<key>from</key>
-			<string>9D576F6F-9FA9-45AE-9CFD-5A674BB749F6 - 9D576F6F-9FA9-45AE-9CFD-5A674BB749F6</string>
-			<key>to</key>
-			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
-		</dict>
-		<key>D998084D-5AC4-44BA-962F-0886EF241731</key>
+		<key>16F3254D-96B6-4FD0-97B8-75A11DCA2E4A</key>
 		<dict>
 			<key>from</key>
 			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
 			<key>to</key>
 			<string>300C1764-9070-475F-A5D4-99A2DE2933DF - 300C1764-9070-475F-A5D4-99A2DE2933DF</string>
+		</dict>
+		<key>754DE48E-DCB6-4B04-942F-79A0CEB83C6A</key>
+		<dict>
+			<key>from</key>
+			<string>9D576F6F-9FA9-45AE-9CFD-5A674BB749F6 - 9D576F6F-9FA9-45AE-9CFD-5A674BB749F6</string>
+			<key>to</key>
+			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
 		</dict>
 	</dict>
 	<key>workflowMetaData</key>
