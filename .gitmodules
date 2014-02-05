@@ -10,3 +10,6 @@
 [submodule "nowhere/vit"]
 	path = nowhere/vit
 	url = git://tasktools.org/vit.git
+[submodule "nowhere/manpages-tldr"]
+	path = nowhere/manpages-tldr
+	url = git://github.com/JIghtuse/manpages-tldr.git
