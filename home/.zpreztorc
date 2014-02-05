@@ -29,3 +29,14 @@ zstyle ':prezto:module:editor' keymap 'vi'
 
 # Auto set the tab and window titles.
 zstyle ':prezto:module:terminal' auto-title 'yes'
+
+# Add location of custom theme.
+
+fpath=(
+  ${HOME}/.z3n/modules/prompt/functions
+  ${fpath}
+)
+
+# Use custom theme.
+
+zstyle ':prezto:module:prompt' theme '3n'
