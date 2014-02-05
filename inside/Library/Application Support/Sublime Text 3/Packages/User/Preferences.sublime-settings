@@ -1,0 +1,36 @@
+{
+	"auto_complete_commit_on_tab": true,
+	"bold_folder_labels": true,
+	"color_scheme": "Packages/Color Scheme - Default/Solarized (Light).tmTheme",
+	"detect_indentation": false,
+	"draw_white_space": "all",
+	"ensure_newline_at_eof_on_save": true,
+	"folder_exclude_patterns":
+	[
+		"log",
+		"vendor/cache",
+		"tmp",
+		".git"
+	],
+	"font_face": "Menlo",
+	"font_size": 12,
+	"highlight_modified_tabs": true,
+	"ignored_packages":
+	[
+		"Markdown",
+		"AdvancedNewFile"
+	],
+	"rulers":
+	[
+		80
+	],
+	"soda_folder_icons": true,
+	"tab_size": 2,
+	"theme": "Sodarized Light 3.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true,
+	"update_check": false,
+	"vintage_start_in_command_mode": true,
+	"word_wrap": true,
+	"wrap_width": 80
+}

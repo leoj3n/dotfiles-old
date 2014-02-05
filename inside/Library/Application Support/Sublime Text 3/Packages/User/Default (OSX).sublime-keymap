@@ -1,0 +1,30 @@
+[
+  { "keys": ["super+ctrl+o"], "command": "open_dir", "args": {"dir": "$file_path", "file": "$file_name"} },
+
+  { "keys": ["super+v"], "command": "paste_and_indent" },
+
+  // { "keys": ["alt+super+up"], "command": "swap_line_up" },
+  // { "keys": ["alt+super+down"], "command": "swap_line_down" },
+
+  { "keys": ["alt+backspace"], "command": "delete_word", "args": { "forward": false, "sub_words": true } },
+  { "keys": ["alt+delete"], "command": "delete_word", "args": { "forward": true, "sub_words": true } },
+
+  { "keys": ["super+space"], "command": "goto_definition" },
+
+  { "keys": ["ctrl+p"], "command": "auto_complete" },
+  { "keys": ["ctrl+n"], "command": "auto_complete" },
+
+  { "keys": ["j", "j"], "command": "exit_insert_mode",
+    "context":
+    [
+      { "key": "setting.command_mode", "operand": false },
+      { "key": "setting.is_widget", "operand": false }
+    ]
+  },
+
+  // { "keys": ["ctrl+alt+j"], "command": "prettyjson" },
+
+  { "keys": ["ctrl+alt+s"], "command": "dev_sync" }
+]
+
+// left off on Line 242

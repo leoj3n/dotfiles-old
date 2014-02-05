@@ -1,0 +1,19 @@
+{
+  "pathMapping": [
+    /*{
+      "type": "local",
+      "destOS": "osx",
+      "source": "/Users/leoj/wp/plugs/shortcodez",
+      "destination":
+        "/Users/leoj/Sites/www/dev/1/wp-content/plugins/shortcodez"
+    }*/
+  ],
+
+  "scpBinary": "scp",     // needed to push saved files across
+  "sshBinary": "ssh",     // needed to recursivly create missing directories
+  "rsyncBinary": "rsync", // needed to perform a full project sync
+  "bashBinary": "sh",     // include any required arguments.
+  "rsyncExcludes": "~/.rsync/exclude",
+
+  "debugMode": false // (ctrl+`  to display the console)
+}

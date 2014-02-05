@@ -1,0 +1,4 @@
+[
+	{ "keys": ["super+ctrl+["], "command": "fold_comments" },
+	{ "keys": ["super+ctrl+]"], "command": "unfold_comments" }
+]
