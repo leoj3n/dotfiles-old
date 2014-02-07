@@ -236,6 +236,7 @@ function git_fetch_change_directory() {
 
 alias -g wpa='~/src/wp/apps'
 alias -g wpp='~/src/wp/plugs'
+alias -g dots='~/.homesick/repos/dotfiles'
 alias -g apacheroots='~/Sites/www/dev/1/wp-content/themes/roots'
 
 ###############################################################################
@@ -519,9 +520,11 @@ function brew_cask_list_since() {
     since="$*"
   fi
 
-  cd "${TAPS}/phinze-cask" && git log \
+  (
+    cd "${TAPS}/phinze-cask" && git log \
     --since="${since}" --name-status --pretty='format:' 'Casks/' \
     | grep '^A' | sed 's!^.*Casks/\(.*\).rb$!\1!'
+  )
 }
 
 ###############################################################################
@@ -744,21 +747,6 @@ relink() {
     echo "$1 exists as a real file, skipping."
 
   fi
-}
-
-###############################################################################
-# Change working directory to the top-most Finder window location
-#
-# Arguments:
-#   none
-# Returns:
-#   none
-###############################################################################
-
-function cdf() {
-  local cmd='tell app "Finder" to POSIX path of (insertion location as alias)'
-
-  cd "$(osascript -e "${cmd}")"
 }
 
 ###############################################################################

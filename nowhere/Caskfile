@@ -12,8 +12,16 @@ install brew-cask
 
 cask install diskaid
 cask install eye-fi
+cask install freezer
+cask install fritzing
+cask install fseventer
+cask install functionflip
+cask install gas-mask
+cask install gawker
+cask install geektool
 cask install github
 cask install gitifier
+cask install gitter
 cask install gnucash
 cask install google-drive
 cask install google-hangouts
@@ -27,6 +35,7 @@ cask install hall
 cask install hazel
 cask install hipchat
 cask install icefloor
+cask install icolors
 cask install icursor
 cask install imagealpha
 cask install imageoptim
@@ -98,6 +107,7 @@ cask install pref-setter
 cask install preference-manager
 cask install preferencecleaner
 cask install prefs-editor
+cask install private-eye
 cask install qlcolorcode
 cask install qlimagesize
 cask install qlmarkdown
@@ -108,7 +118,6 @@ cask install quicklook-json
 cask install quicksilver
 cask install rcdefaultapp
 cask install rcenvironment
-cask install rcwebcolorpicker
 cask install reggy
 cask install retinacapture
 cask install retinizer
@@ -131,6 +140,7 @@ cask install simple-css
 cask install simplecap
 cask install sitesucker
 cask install sketchup
+cask install skreenics
 cask install skype
 cask install slate
 cask install slidemode
@@ -166,9 +176,11 @@ cask install thunderbird
 cask install tilemill
 cask install time-tracker-mac
 cask install tinkertool
+cask install tofu
 cask install tomighty
 cask install tor-browser
 cask install totalspaces
+cask install trailer
 cask install trailrunner
 cask install transmission
 cask install treesheets

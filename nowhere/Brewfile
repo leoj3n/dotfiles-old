@@ -21,11 +21,13 @@ install bash
 install bash-completion
 install bdw-gc
 install brew-cask
+install brew-desc
 install cairo
 install casperjs
 install clojure
 install cmake
 install cmus
+install colormake
 install composer
 install coreutils
 install cscope
@@ -46,6 +48,7 @@ install freetype
 install gdbm
 install gdk-pixbuf
 install gettext
+install gh
 install ghi
 install ghostscript
 install giblib
@@ -112,12 +115,14 @@ install libyaml
 install little-cms2
 install lua
 install lynx
+install mackup
 install macvim
 install mad
 install man2html
 install mercurial
 install mobile-shell
 install mp4v2
+install mpg123
 install mplayer
 install mtr
 install mutt
@@ -138,7 +143,6 @@ install p11-kit
 install pango
 install pcre
 install pdfgrep
-install phantomjs
 install php-code-sniffer
 install php-cs-fixer
 install php54
@@ -154,6 +158,7 @@ install poppler
 install portaudio
 install privoxy
 install protobuf
+install pwsafe
 install py2cairo
 install pygobject
 install pygtk

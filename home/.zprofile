@@ -62,9 +62,3 @@ source "$(brew --prefix)/etc/profile.d/z.sh"
 #
 
 source "${HOME}/perl5/perlbrew/etc/bashrc"
-
-#
-# Ruby Version Manager
-#
-
-source "${HOME}/.rvm/scripts/rvm"

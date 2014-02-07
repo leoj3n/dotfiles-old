@@ -20,9 +20,10 @@ zstyle ':prezto:load' pmodule \
   'git' \
   'node' \
   'osx' \
+  'ruby' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'prompt' \
+  'prompt'
 
 # Set the key mapping style to 'emacs' or 'vi'.
 zstyle ':prezto:module:editor' keymap 'vi'
