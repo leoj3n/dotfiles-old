@@ -7,25 +7,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc" ]]; then
 fi
 
 ###############################################################################
-# Options
+# GitHub CLI
 ###############################################################################
 
-# setopt SH_WORD_SPLIT
-
-###############################################################################
-# Variables
-###############################################################################
-
-readonly CASKROOM='/opt/homebrew-cask/Caskroom'
-readonly TAPS="$(brew --repository)/Library/Taps"
-readonly VLC="${CASKROOM}/vlc/2.1.1/VLC.app/Contents/MacOS/VLC"
-
-###############################################################################
-# Autoloads
-###############################################################################
-
-autoload -U colors && colors
-autoload bashcompinit && bashcompinit
+eval "$(gh alias -s)"
+# eval "$(hub alias -s)"
 
 ###############################################################################
 # Filetype Aliases
@@ -34,30 +20,6 @@ autoload bashcompinit && bashcompinit
 alias -s git=gfc
 alias -s js=wget
 alias -s less=wget
-
-###############################################################################
-# Homeshick
-###############################################################################
-
-source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-
-fpath=(
-  ${HOME}/.homesick/repos/homeshick/completions
-  ${fpath}
-)
-
-###############################################################################
-# GitHub CLI
-###############################################################################
-
-eval "$(gh alias -s)"
-# eval "$(hub alias -s)"
-
-###############################################################################
-# WP-CLI Completion
-###############################################################################
-
-source "${HOME}/.composer/vendor/wp-cli/wp-cli/utils/wp-completion.bash"
 
 ###############################################################################
 # Git Aliases

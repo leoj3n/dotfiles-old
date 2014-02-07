@@ -6,6 +6,23 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zprofile"
 fi
 
+###############################################################################
+# Options
+###############################################################################
+
+# setopt SH_WORD_SPLIT
+
+###############################################################################
+# Autoloads
+###############################################################################
+
+autoload -U colors && colors
+autoload bashcompinit && bashcompinit
+
+###############################################################################
+# Variables
+###############################################################################
+
 #
 # Editors
 #
@@ -35,7 +52,15 @@ export GOPATH="${HOME}/.go"
 export PYTHONPATH="/usr/local/lib/python2.7/site-packages:${PYTHONPATH}"
 
 #
-# Set the list of directories that Zsh searches for programs.
+# Custom locations
+#
+
+readonly CASKROOM='/opt/homebrew-cask/Caskroom'
+readonly TAPS="$(brew --repository)/Library/Taps"
+readonly VLC="${CASKROOM}/vlc/2.1.1/VLC.app/Contents/MacOS/VLC"
+
+#
+# Set the list of directories that Zsh searches for programs
 #
 
 path=(
@@ -50,6 +75,31 @@ path=(
   ${HOME}/bin
   ${path}
 )
+
+#
+# Set the list of directories that Zsh searches for functions
+#
+
+fpath=(
+  ${HOME}/.homesick/repos/homeshick/completions
+  ${fpath}
+)
+
+###############################################################################
+# Sources
+###############################################################################
+
+#
+# WP-CLI Completion
+#
+
+source "${HOME}/.composer/vendor/wp-cli/wp-cli/utils/wp-completion.bash"
+
+#
+# Homeshick
+#
+
+source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 
 #
 # z
