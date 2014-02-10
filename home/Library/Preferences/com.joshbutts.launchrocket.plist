@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>homebrew.mxcl.dnsmasq</key>
+	<dict>
+		<key>name</key>
+		<string>Dnsmasq</string>
+		<key>plist</key>
+		<string>/usr/local/opt/dnsmasq/homebrew.mxcl.dnsmasq.plist</string>
+	</dict>
+	<key>homebrew.mxcl.mysql</key>
+	<dict>
+		<key>name</key>
+		<string>Mysql</string>
+		<key>plist</key>
+		<string>/usr/local/opt/mysql/homebrew.mxcl.mysql.plist</string>
+	</dict>
+	<key>homebrew.mxcl.nginx</key>
+	<dict>
+		<key>name</key>
+		<string>Nginx</string>
+		<key>plist</key>
+		<string>/usr/local/opt/nginx/homebrew.mxcl.nginx.plist</string>
+	</dict>
+</dict>
+</plist>
