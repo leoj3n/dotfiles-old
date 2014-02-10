@@ -1,7 +1,0 @@
-#
-# Executes commands at logout.
-#
-
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zlogout" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zlogout"
-fi
