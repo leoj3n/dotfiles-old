@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
+
 #
 # Description:
 #   Send SMS by e-mail.
 #
-# Author:
+# Authors:
 #   jonahoffline (Jonah Ruiz) <jonah@pixelhipsters.com>
+#   Joel Kuzmarski <leoj3n@gmail.com>
 #
 # Github:
 #   https://github.com/jonahoffline/shell_stuff
+#
 
 require 'mail'
 
@@ -33,10 +36,10 @@ module SpamBitch
       end
 
       mail = Mail.new do
-        from     "#{ENV['GMAIL_USER']}"
-        to        "#{telephone}@#{SpamBitch::Phone.carriers[carrier]}"
-        subject  'SMS from SpamBitch'
-        body     " #{msg}"
+        from    "#{ENV['GMAIL_USER']}"
+        to      "#{telephone}@#{SpamBitch::Phone.carriers[carrier]}"
+        subject 'Email SMS!'
+        body    " #{msg}"
       end
       mail.deliver!
     end
@@ -75,3 +78,4 @@ module SpamBitch
 end
 
 SpamBitch::CLI.run
+
