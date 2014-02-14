@@ -23,7 +23,6 @@ install bdw-gc
 install brew-cask
 install brew-desc
 install cairo
-install casperjs
 install clojure
 install cmake
 install cmus
@@ -56,6 +55,7 @@ install gist
 install git
 install git-extras
 install git-flow
+install gitsh
 install glib
 install gmime
 install gmp
@@ -166,7 +166,9 @@ install python
 install ranger
 install readline
 install recode
+install ruby
 install safe-rm
+install screenbrightness
 install spidermonkey
 install sqlite
 install swi-prolog
@@ -176,6 +178,7 @@ install task
 install tcpdump
 install tesseract
 install texi2html
+install the-silver-searcher
 install tig
 install timedog
 install tmux

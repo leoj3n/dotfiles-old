@@ -12,6 +12,7 @@ install brew-cask
 
 cask install diskaid
 cask install eye-fi
+cask install freemind
 cask install freezer
 cask install fritzing
 cask install fseventer
@@ -19,6 +20,7 @@ cask install functionflip
 cask install gas-mask
 cask install gawker
 cask install geektool
+cask install gisto
 cask install github
 cask install gitifier
 cask install gitter
@@ -34,6 +36,7 @@ cask install growlvoice
 cask install hall
 cask install hazel
 cask install hipchat
+cask install hpuload
 cask install icefloor
 cask install icolors
 cask install icursor
@@ -66,6 +69,7 @@ cask install macintosh-explorer
 cask install macports
 cask install macs-fan-control
 cask install mailmate
+cask install mediafire-desktop
 cask install menuola
 cask install miro-video-converter
 cask install mirror-displays
@@ -77,12 +81,14 @@ cask install mover
 cask install mp4tools
 cask install mucommander
 cask install multibrowser
+cask install multifirefox
 cask install nocturne
 cask install node
 cask install node-webkit
 cask install nosleep
 cask install nvalt
 cask install obsidian-menu-bar-mountain-lion
+cask install ocenaudio
 cask install onyx
 cask install opera-next
 cask install paparazzi
@@ -129,6 +135,7 @@ cask install screenhero
 cask install scribus
 cask install scriptql
 cask install selfcontrol
+cask install sensiolabsdesktop
 cask install sequel-pro
 cask install shadowsweeper
 cask install shelf-leveler
@@ -191,7 +198,9 @@ cask install vagrant
 cask install videospec
 cask install virtualbox
 cask install vlc
+cask install wacom-bamboo-tablet
 cask install webp-quicklook
+cask install webpquicklook
 cask install whatpulse
 cask install whiteclock
 cask install wireshark
