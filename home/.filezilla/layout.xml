@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <FileZilla3>
-    <Layout Builddate="2013-08-07" Buildtime="21:22:57">
+    <Layout Builddate="2014-02-11" Buildtime="20:29:16">
         <Resources>
-            <xrc file="dialogs.xrc" date="1375903425" />
-            <xrc file="menus.xrc" date="1375903425" />
-            <xrc file="netconfwizard.xrc" date="1375903425" />
-            <xrc file="quickconnectbar.xrc" date="1375903425" />
-            <xrc file="settings.xrc" date="1375903425" />
-            <xrc file="toolbar.xrc" date="1375903425" />
+            <xrc file="dialogs.xrc" date="1392147019" />
+            <xrc file="menus.xrc" date="1392147020" />
+            <xrc file="netconfwizard.xrc" date="1392147020" />
+            <xrc file="quickconnectbar.xrc" date="1392147020" />
+            <xrc file="settings.xrc" date="1392147020" />
+            <xrc file="toolbar.xrc" date="1392147020" />
         </Resources>
         <Language id="en_US" date="">
             <Font font="0;13;70;90;90;0;Lucida Grande;47" width="810" height="16" />
             <Dialog name="Site Manager" width="628" />
-            <Dialog name="Settings" width="597" />
         </Language>
     </Layout>
 </FileZilla3>

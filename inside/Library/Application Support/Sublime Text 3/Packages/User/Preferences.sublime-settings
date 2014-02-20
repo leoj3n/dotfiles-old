@@ -17,8 +17,9 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Markdown",
-		"AdvancedNewFile"
+		"AdvancedNewFile",
+		"SublimeCodeIntel",
+		"Markdown"
 	],
 	"rulers":
 	[
