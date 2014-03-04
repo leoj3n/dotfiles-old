@@ -1,12 +1,15 @@
-[submodule "inside/.vim/bundle/vundle"]
-	path = inside/.vim/bundle/vundle
-	url = git://github.com/gmarik/vundle.git
-[submodule "nowhere/play-button-itunes-patch"]
-	path = nowhere/play-button-itunes-patch
+[submodule "submodules/manpages-tldr"]
+	path = submodules/manpages-tldr
+	url = git@github.com:JIghtuse/manpages-tldr.git
+[submodule "submodules/vit"]
+	path = submodules/vit
+	url = https://git.tasktools.org/scm/ex/vit.git
+[submodule "submodules/selecta"]
+	path = submodules/selecta
+	url = git@github.com:garybernhardt/selecta.git
+[submodule "submodules/play-button-itunes-patch"]
+	path = submodules/play-button-itunes-patch
 	url = git://github.com/thebitguru/play-button-itunes-patch.git
-[submodule "nowhere/vit"]
-	path = nowhere/vit
-	url = git://tasktools.org/vit.git
-[submodule "nowhere/manpages-tldr"]
-	path = nowhere/manpages-tldr
-	url = git://github.com/JIghtuse/manpages-tldr.git
+[submodule "submodules/vundle"]
+	path = submodules/vundle
+	url = git://github.com/gmarik/vundle.git

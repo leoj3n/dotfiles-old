@@ -23,12 +23,14 @@ Bundle 'tpope/vim-repeat'
 Bundle 'mattn/webapi-vim'
 Bundle 'reedes/vim-wordy'
 Bundle 'justinmk/vim-gtfo'
+Bundle 'majutsushi/tagbar'
 Bundle 'int3/vim-extradite'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-sensible'
 Bundle 'tpope/vim-surround'
 Bundle 'justinmk/vim-sneak'
 Bundle 'tpope/vim-commentary'
+Bundle 'tpope/vim-projectile'
 Bundle 'itchyny/lightline.vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'pangloss/vim-javascript'
@@ -79,24 +81,54 @@ let mapleader = ","
 set showcmd
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Show line numbers.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set number
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Hide default --INSERT-- from showing in the bottom left.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set noshowmode
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THEME
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-syntax enable
 set background=light
 colorscheme solarized
+
+syntax enable       " enable syntax highlighting
+set cursorline      " highlight the current line
+set nobackup        " don't create pointless backup files; Use VCS instead
+set autoread        " watch for file changes
+set number          " show line numbers
+set showcmd         " show selection metadata (like selected character count)
+set noshowmode      " don't show INSERT, VISUAL, etc. mode
+set showmatch       " show matching brackets
+set smarttab        " better backspace and tab functionality
+set scrolloff=5     " show at least 5 lines above/below
+filetype on         " enable filetype detection
+filetype indent on  " enable filetype-specific indenting
+filetype plugin on  " enable filetype-specific plugins
+
+" tabs and indenting
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab       " spaces instead of tabs
+set smartindent     " smart indenting
+set autoindent smartindent  " auto/smart indent
+
+" bells
+set noerrorbells  " turn off audio bell
+set visualbell    " but leave on a visual bell
+
+" search
+set hlsearch    " highlighted search results
+set showmatch   " show matching bracket
+
+" other
+set guioptions=aAace  " don't show scrollbar in MacVim
+
+" clipboard
+set clipboard=unnamed " allow yy, etc. to interact with OS X clipboard
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Key mapping.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nmap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE

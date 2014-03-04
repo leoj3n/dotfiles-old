@@ -121,6 +121,7 @@ install mad
 install man2html
 install mercurial
 install mobile-shell
+install mongodb
 install mp4v2
 install mpg123
 install mplayer

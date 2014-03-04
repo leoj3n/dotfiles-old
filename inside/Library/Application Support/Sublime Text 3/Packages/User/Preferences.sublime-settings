@@ -5,11 +5,15 @@
 	"detect_indentation": false,
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
+	"file_exclude_patterns":
+	[
+		".tags",
+		".tags_sorted_by_file",
+		".gemtags"
+	],
 	"folder_exclude_patterns":
 	[
 		"log",
-		"vendor/cache",
-		"tmp",
 		".git"
 	],
 	"font_face": "Menlo",
@@ -17,9 +21,9 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"AdvancedNewFile",
 		"SublimeCodeIntel",
-		"Markdown"
+		"Markdown",
+		"AdvancedNewFile"
 	],
 	"rulers":
 	[

@@ -1,11 +1,13 @@
 [include]
+
   #
-  # Extra personal settings (e.g. name and email)
+  # Extra personal settings (e.g. name and email).
   #
 
   path = ~/.gitconfig_extra
 
 [alias]
+
   #
   # http://gitready.com/advanced/2011/10/21/ribbon-and-catchup-reading-new-commits.html
   #
@@ -14,7 +16,7 @@
   catchup = log --patch --reverse --topo-order _ribbon..origin/master
 
   #
-  # Log everything I did today for the current repo.
+  # List log of everything I did today for the current repo.
   #
 
   today = !git log --since=midnight --author=\"$(git config user.name)\" --oneline
@@ -44,5 +46,7 @@
 
 [merge]
   tool = vimdiff
+
 [init]
 	templatedir = ~/.git_template
+
