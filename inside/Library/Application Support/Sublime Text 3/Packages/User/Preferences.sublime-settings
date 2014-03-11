@@ -22,8 +22,8 @@
 	"ignored_packages":
 	[
 		"Markdown",
-		"AdvancedNewFile",
-		"SublimeCodeIntel"
+		"SublimeCodeIntel",
+		"AdvancedNewFile"
 	],
 	"rulers":
 	[

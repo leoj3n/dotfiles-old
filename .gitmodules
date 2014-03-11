@@ -79,3 +79,6 @@
 [submodule "submodules/cli/speedread"]
 	path = submodules/cli/speedread
 	url = git@github.com:pasky/speedread.git
+[submodule "submodules/chrome/jetzt"]
+	path = submodules/chrome/jetzt
+	url = git@github.com:ds300/jetzt.git
