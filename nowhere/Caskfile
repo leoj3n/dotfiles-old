@@ -187,7 +187,6 @@ cask install sweet-home3d
 cask install swingfish
 cask install tactor
 cask install tag
-cask install taskpaper
 cask install teamspeak-client
 cask install teamviz
 cask install teleport

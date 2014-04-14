@@ -126,6 +126,7 @@ install mp4v2
 install mpg123
 install mplayer
 install mtr
+install multimarkdown
 install mutt
 install mysql
 install namebench
@@ -136,6 +137,7 @@ install ninja
 install nmap
 install notmuch
 install nspr
+install nvm
 install objective-caml
 install openjpeg
 install openssl
@@ -170,6 +172,7 @@ install recode
 install ruby
 install safe-rm
 install screenbrightness
+install spark
 install spidermonkey
 install sqlite
 install swi-prolog
