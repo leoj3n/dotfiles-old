@@ -82,3 +82,12 @@
 [submodule "submodules/chrome/jetzt"]
 	path = submodules/chrome/jetzt
 	url = git@github.com:ds300/jetzt.git
+[submodule "submodules/chrome/isometric-contributions"]
+	path = submodules/chrome/isometric-contributions
+	url = git@github.com:jasonlong/isometric-contributions.git
+[submodule "submodules/chrome/TCDR-Chrome-Extension"]
+	path = submodules/chrome/TCDR-Chrome-Extension
+	url = git@github.com:squaresurf/TCDR-Chrome-Extension.git
+[submodule "submodules/chrome/zero-base-themes"]
+	path = submodules/chrome/zero-base-themes
+	url = git@github.com:mauricecruz/zero-base-themes.git
