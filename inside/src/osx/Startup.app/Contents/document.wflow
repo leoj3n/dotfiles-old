@@ -56,12 +56,14 @@
 				<string>/System/Library/Automator/Run Shell Script.action</string>
 				<key>ActionName</key>
 				<string>Run Shell Script</string>
+				<key>ActionNameComment</key>
+				<string>Set defaults</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
 					<string>defaults write com.zibity.broomstick stats no
 
-defaults write com.zibity.broomstick BMIOloginitem "Yes"
+defaults write com.zibity.broomstick BMIOloginitem "No"
 
 defaults write com.zibity.broomstick apporder "FreeSpace Tab|Gas Mask|Flux|Caffeine|Spirited Away|WhatPulse|Memory Clean|Freezer|Dropbox|Gitifier|Feeds|TotalSpaces|SlimBatteryMonitor|WhiteClock"
 
@@ -237,6 +239,8 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<string>/System/Library/Automator/Run Shell Script.action</string>
 				<key>ActionName</key>
 				<string>Run Shell Script</string>
+				<key>ActionNameComment</key>
+				<string>Start proxy</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
@@ -462,14 +466,14 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>16F3254D-96B6-4FD0-97B8-75A11DCA2E4A</key>
+		<key>4892C074-07E9-40BC-AC46-32B9BC239B03</key>
 		<dict>
 			<key>from</key>
 			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
 			<key>to</key>
 			<string>300C1764-9070-475F-A5D4-99A2DE2933DF - 300C1764-9070-475F-A5D4-99A2DE2933DF</string>
 		</dict>
-		<key>754DE48E-DCB6-4B04-942F-79A0CEB83C6A</key>
+		<key>DA1A339C-40FF-4EE2-9DFF-A0F121528593</key>
 		<dict>
 			<key>from</key>
 			<string>9D576F6F-9FA9-45AE-9CFD-5A674BB749F6 - 9D576F6F-9FA9-45AE-9CFD-5A674BB749F6</string>
