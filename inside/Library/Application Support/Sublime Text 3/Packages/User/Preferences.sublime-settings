@@ -1,7 +1,7 @@
 {
 	"auto_complete_commit_on_tab": true,
 	"bold_folder_labels": true,
-	"color_scheme": "Packages/Color Scheme - Default/Solarized (Light).tmTheme",
+	"color_scheme": "Packages/User/Solarized (Light) (SL).tmTheme",
 	"detect_indentation": false,
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
@@ -21,9 +21,9 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
+		"AdvancedNewFile",
 		"Markdown",
-		"SublimeCodeIntel",
-		"AdvancedNewFile"
+		"SublimeCodeIntel"
 	],
 	"rulers":
 	[
