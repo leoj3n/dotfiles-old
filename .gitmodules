@@ -91,3 +91,12 @@
 [submodule "submodules/chrome/zero-base-themes"]
 	path = submodules/chrome/zero-base-themes
 	url = git@github.com:mauricecruz/zero-base-themes.git
+[submodule "submodules/chrome/github-notifier-chrome"]
+	path = submodules/chrome/github-notifier-chrome
+	url = git@github.com:sindresorhus/github-notifier-chrome.git
+[submodule "submodules/cli/git-plugins"]
+	path = submodules/cli/git-plugins
+	url = git@github.com:afeld/git-plugins.git
+[submodule "submodules/cli/gifify"]
+	path = submodules/cli/gifify
+	url = git@github.com:jclem/gifify.git
