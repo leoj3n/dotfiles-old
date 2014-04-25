@@ -38,6 +38,32 @@ cheatsheet_for "3n" do
     key :arrow_dn_right, "↘"
     key :arrow_dn_left , "↙"
 
+    section "☆ Key" do
+    __ _alt     , "Alt"
+    __ _caps    , "Caps Lock"
+    __ _command , "Command"
+    __ _control , "Control"
+    __ _delete  , "Delete"
+    __ _enter   , "Enter"
+    __ _esc     , "Escape"
+    __ _fn      , "Function"
+    __ _lcommand, "Left Command"
+    __ _rcommand, "Right Command"
+    __ _shift   , "Shift"
+    __ _space   , "Space"
+    __ _tab     , "Tab"
+      section "Gestures" do
+        __ _gesture_up_left , "Up left"
+        __ _gesture_up_right, "Up right"
+        __ _gesture_dn_right, "Down right"
+        __ _gesture_dn_left , "Down left"
+        __ _gesture_dn      , "Down"
+        __ _gesture_up      , "Up"
+        __ _gesture_left    , "Left"
+        __ _gesture_right   , "Right"
+      end
+    end
+
     section "Remapped" do
     __ _caps, _delete
     __ (_shift _esc), _caps
@@ -80,9 +106,9 @@ cheatsheet_for "3n" do
     end
 
     section "Moom.app" do
-    __ "Laptop preset"      , (_command _alt "w")
-    __ "Office preset"      , (_command _alt "o")
-    __ "Moom current window", (_command _control "w")
+    __ "Laptop preset" , (_command _alt "w")
+    __ "Office preset" , (_command _alt "o")
+    __ "Start Mooming" , (_command _control "w")
       section "Mooming" do
       __ "Move up"     , (_command _arrow_up)
       __ "Move down"   , (_command _arrow_dn)
@@ -96,6 +122,15 @@ cheatsheet_for "3n" do
       __ "Grow down"   , (_control _arrow_dn)
       __ "Grow left"   , (_control _arrow_left)
       __ "Grow right"  , (_control _arrow_right)
+      __ "Fill screen" , _space
+      __ "Half left"   , (_command _arrow_left)
+      __ "Half right"  , (_command _arrow_right)
+      __ "Half top"    , (_command _arrow_up)
+      __ "Half bottom" , (_command _arrow_dn)
+      __ "Quarter top left"    , (_command _arrow_up_left)
+      __ "Quarter top right"   , (_command _arrow_up_right)
+      __ "Quarter bottom left" , (_command _arrow_dn_left)
+      __ "Quarter bottom right", (_command _arrow_dn_right)
       end
     end
 
