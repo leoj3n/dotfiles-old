@@ -9,6 +9,13 @@
 		<key>plist</key>
 		<string>/usr/local/opt/dnsmasq/homebrew.mxcl.dnsmasq.plist</string>
 	</dict>
+	<key>homebrew.mxcl.mongodb</key>
+	<dict>
+		<key>name</key>
+		<string>Mongodb</string>
+		<key>plist</key>
+		<string>/usr/local/opt/mongodb/homebrew.mxcl.mongodb.plist</string>
+	</dict>
 	<key>homebrew.mxcl.mysql</key>
 	<dict>
 		<key>name</key>
