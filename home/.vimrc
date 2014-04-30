@@ -24,6 +24,7 @@ Bundle 'mattn/webapi-vim'
 Bundle 'reedes/vim-wordy'
 Bundle 'justinmk/vim-gtfo'
 Bundle 'majutsushi/tagbar'
+Bundle 'koron/nyancat-vim'
 Bundle 'int3/vim-extradite'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-sensible'
@@ -133,6 +134,9 @@ nmap <F8> :TagbarToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Airline "
+"""""""""""
 
 let g:lightline = {
       \ 'colorscheme': 'solarized_light',
