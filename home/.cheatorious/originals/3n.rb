@@ -100,9 +100,9 @@ cheatsheet_for "3n" do
     end
 
     section "Quicksilver.app" do
+    __ "Search Yubnub"    , (_fn "1")
     __ "Search DuckDuckGo", (_fn "2")
     __ "Search Google"    , (_fn "3")
-    __ "Search Yubnub"    , (_fn "1")
     end
 
     section "BetterTouchTool" do
@@ -198,7 +198,7 @@ cheatsheet_for "3n" do
 
     section "Path Finder.app" do
     __ "New Folder"               , (_shift _command "n")
-    __ "New Folder with Selection", (_alt _command "n")
+    __ "New Folder with Selection", (_control _command "n")
     __ "New File"                 , (_alt _command "n")
     __ "Get Info"                 , (_command "i")
     __ "Make Alias"               , (_command "l")
@@ -211,18 +211,18 @@ cheatsheet_for "3n" do
       __ "Show Invisible Files" , (_shift _command "i")
       __ "Show Package Contents", (_shift _command "o")
         section "Sort by" do
-          __ "Date Modified", (_command "7")
-          __ "Kind"         , (_command "9")
-          __ "Name"         , (_command "0")
-          __ "Size"         , (_command "8")
+        __ "Date Modified", (_command "7")
+        __ "Kind"         , (_command "9")
+        __ "Name"         , (_command "0")
+        __ "Size"         , (_command "8")
         end
       __ "Show View Options", (_shift _command "j")
       __ "Dual Browser"     , "f1"
-      section "Dual Browser" do
+        section "Dual Browser" do
         __ "Horizontal Layout", "f3"
         __ "Vertical Layout"  , "f4"
         __ "Swap Panes"       , "f2"
-      end
+        end
       __ "Sidebar"   , (_command "4")
       __ "Cover Flow", (_shift _command "c")
       end
@@ -258,7 +258,7 @@ cheatsheet_for "3n" do
     end
 
     section "TeamSpeak 3 Client.app" do
-    __ "Transmit", (_command _control _shift)
+    __ "Transmit", (_command _control)
     end
 
     section "Services" do
