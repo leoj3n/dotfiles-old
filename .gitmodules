@@ -52,6 +52,7 @@
 [submodule "submodules/chrome/chrome-github-avatars"]
 	path = submodules/chrome/chrome-github-avatars
 	url = git://github.com/anasnakawa/chrome-github-avatars.git
+  ignore = dirty
 [submodule "submodules/chrome/github-annotator"]
 	path = submodules/chrome/github-annotator
 	url = git@github.com:mesuutt/github-annotator.git
@@ -70,6 +71,7 @@
 [submodule "submodules/chrome/vimium"]
 	path = submodules/chrome/vimium
 	url = git://github.com/philc/vimium.git
+  ignore = all
 [submodule "submodules/chrome/blame_parent"]
 	path = submodules/chrome/blame_parent
 	url = git@github.com:chancancode/blame_parent.git
