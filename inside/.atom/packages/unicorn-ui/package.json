@@ -1,0 +1,26 @@
+{
+  "name": "unicorn-ui",
+  "theme": "ui",
+  "version": "0.1.1",
+  "license": "MIT",
+  "description": "A retro ui theme with some vibrant colors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unicorn/atom-unicorn-ui"
+  },
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "readme": "# Atom Unicorn theme\n\nUnicorn UI theme for Atom that matches the [unicorn syntax](https://atom.io/packages/unicorn-syntax)\n\nThis theme can then be activated by going to the _Themes_ section in the Settings view (`cmd-,`) and selecting it from the _UI Themes_ drop-down menu.\n\n![Screenshot](http://i.imgur.com/EX5t2XM.png)\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/unicorn/atom-unicorn-ui/issues"
+  },
+  "homepage": "https://github.com/unicorn/atom-unicorn-ui",
+  "_id": "unicorn-ui@0.1.1",
+  "dist": {
+    "shasum": "ce8d62d0f28e5dfff461297f967e999633398b92"
+  },
+  "_resolved": "/var/folders/bj/p3pj7w7d53b_b74d30q_818m0000gp/T/d-114313-14553-1g275tc/package.tgz",
+  "_from": "/var/folders/bj/p3pj7w7d53b_b74d30q_818m0000gp/T/d-114313-14553-1g275tc/package.tgz"
+}

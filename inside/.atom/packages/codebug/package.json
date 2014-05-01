@@ -1,0 +1,32 @@
+{
+  "name": "codebug",
+  "version": "0.1.2",
+  "main": "./lib/codebug",
+  "description": "Debug with Codebug",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rjocoleman/atom-codebug"
+  },
+  "license": "MIT",
+  "activationEvents": [
+    "codebug:break"
+  ],
+  "engines": {
+    "atom": "*"
+  },
+  "dependencies": {
+    "fs-plus": "2.x"
+  },
+  "readme": "# Codebug\n\n\nAtom package for interaction with Codebug.\n\n\n## What's Codebug ?\n\nCodebug is a Mac OSX PHP standalone debugger.\nYou can find more information here: [http://codebugapp.com](http://codebugapp.com)\n\n## How to use this ?\n\nAfter installing this package, just select a PHP file you want to debug, select a line and press `CMD + ALT + b` to start Codebug.\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/rjocoleman/atom-codebug/issues"
+  },
+  "homepage": "https://github.com/rjocoleman/atom-codebug",
+  "_id": "codebug@0.1.2",
+  "dist": {
+    "shasum": "1885a7c2a5bd1479470fca73b7a515bc6e5eb2ca"
+  },
+  "_resolved": "/var/folders/bj/p3pj7w7d53b_b74d30q_818m0000gp/T/d-114313-11184-r8a20n/package.tgz",
+  "_from": "/var/folders/bj/p3pj7w7d53b_b74d30q_818m0000gp/T/d-114313-11184-r8a20n/package.tgz"
+}
