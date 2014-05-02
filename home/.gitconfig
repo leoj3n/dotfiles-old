@@ -47,6 +47,11 @@
 [merge]
   tool = vimdiff
 
-[init]
-	templatedir = ~/.git_template
+[hub]
+  protocol = https
 
+[gh]
+  protocol = https
+
+[init]
+  templatedir = /Users/leoj/.git-template-with-git-hooks

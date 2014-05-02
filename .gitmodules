@@ -102,3 +102,6 @@
 [submodule "submodules/cli/gifify"]
 	path = submodules/cli/gifify
 	url = git@github.com:jclem/gifify.git
+[submodule "submodules/cli/git-hooks"]
+	path = submodules/cli/git-hooks
+	url = git@github.com:icefox/git-hooks.git
