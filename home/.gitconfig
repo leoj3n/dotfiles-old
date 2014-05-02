@@ -4,7 +4,7 @@
   # Extra personal settings (e.g. name and email).
   #
 
-  path = ~/.gitconfig_extra
+  path = .gitconfig_extra
 
 [alias]
 
