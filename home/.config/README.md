@@ -2,6 +2,6 @@
 
 Many programs store their setttings in this default location.
 
-## Ignore
+## Banned (Do not add to castle)
 
-* [~/.config/gh-update](http://owenou.com/gh/#autoupdate)
+* gh-update: jingweno/gh update check (See <http://owenou.com/gh/#autoupdate>)
