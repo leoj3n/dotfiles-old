@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/leoj3n/dotfiles",
   "devDependencies": {
-    "gh": "~1.8.2"
+    "gh": "*",
+    "gh-gif": "*"
   }
 }
