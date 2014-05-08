@@ -1,6 +1,3 @@
-[submodule "submodules/vundle"]
-	path = submodules/vundle
-	url = git://github.com/gmarik/vundle.git
 [submodule "submodules/cli/manpages-tldr"]
 	path = submodules/cli/manpages-tldr
 	url = git@github.com:JIghtuse/manpages-tldr.git
@@ -105,3 +102,6 @@
 [submodule "submodules/cli/git-hooks"]
 	path = submodules/cli/git-hooks
 	url = git@github.com:icefox/git-hooks.git
+[submodule "submodules/cli/Vundle.vim"]
+	path = submodules/cli/Vundle.vim
+	url = https://github.com/gmarik/Vundle.vim.git

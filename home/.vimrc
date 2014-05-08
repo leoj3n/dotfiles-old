@@ -1,78 +1,70 @@
-set nocompatible              " be iMproved
-filetype off                  " required!
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Let Vundle manage Vundle (required).
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" GitHub bundles.
+" GitHub plugins.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'tpope/vim-git'
-Bundle 'kien/ctrlp.vim'
-Bundle 'mattn/gist-vim'
-Bundle 'tpope/vim-rails'
-Bundle 'mattn/emmet-vim'
-Bundle 'tpope/vim-repeat'
-Bundle 'mattn/webapi-vim'
-Bundle 'reedes/vim-wordy'
-Bundle 'justinmk/vim-gtfo'
-Bundle 'majutsushi/tagbar'
-Bundle 'koron/nyancat-vim'
-Bundle 'int3/vim-extradite'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-sensible'
-Bundle 'tpope/vim-surround'
-Bundle 'justinmk/vim-sneak'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-projectile'
-Bundle 'itchyny/lightline.vim'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'pangloss/vim-javascript'
-Bundle 'stephpy/vim-php-cs-fixer'
-Bundle 'sumpygump/php-documentor-vim'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'tpope/vim-git'
+Plugin 'kien/ctrlp.vim'
+Plugin 'mattn/gist-vim'
+Plugin 'tpope/vim-rails'
+Plugin 'mattn/emmet-vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'mattn/webapi-vim'
+Plugin 'reedes/vim-wordy'
+Plugin 'justinmk/vim-gtfo'
+Plugin 'majutsushi/tagbar'
+Plugin 'koron/nyancat-vim'
+Plugin 'int3/vim-extradite'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-sensible'
+Plugin 'tpope/vim-surround'
+Plugin 'justinmk/vim-sneak'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-projectile'
+Plugin 'itchyny/lightline.vim'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'pangloss/vim-javascript'
+Plugin 'stephpy/vim-php-cs-fixer'
+Plugin 'sumpygump/php-documentor-vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim-scripts bunldes.
+" Vim-scripts plugins.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'L9'
-Bundle 'FuzzyFinder'
+Plugin 'L9'
+Plugin 'FuzzyFinder'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Non-GitHub bundles.
+" Non-GitHub plugins.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Bundle 'git://git.wincent.com/command-t.git'
+" Plugin 'git://git.wincent.com/command-t.git'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Local bundles.
+" Local plugins.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Bundle 'file:///Users/gmarik/path/to/plugin'
+" Plugin 'file:///Users/gmarik/path/to/plugin'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Other bundle settings.
+" All plugins must be added before the following.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-filetype plugin indent on     " required!
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install (update) bundles
-" :BundleSearch(!) foo - search (or refresh cache first) for foo
-" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle commands are not allowed.
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Change leader and show it in bottom right.
