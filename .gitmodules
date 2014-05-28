@@ -105,3 +105,18 @@
 [submodule "submodules/cli/Vundle.vim"]
 	path = submodules/cli/Vundle.vim
 	url = https://github.com/gmarik/Vundle.vim.git
+[submodule "submodules/chrome/octotree"]
+	path = submodules/chrome/octotree
+	url = https://github.com/buunguyen/octotree.git
+[submodule "submodules/cli/compleat"]
+	path = submodules/cli/compleat
+	url = https://github.com/mbrubeck/compleat.git
+[submodule "submodules/cli/mvb"]
+	path = submodules/cli/mvb
+	url = https://github.com/bfontaine/mvb
+[submodule "submodules/chrome/httpswitchboard"]
+	path = submodules/chrome/httpswitchboard
+	url = https://github.com/gorhill/httpswitchboard.git
+[submodule "submodules/cli/ttygif"]
+	path = submodules/cli/ttygif
+	url = https://github.com/icholy/ttygif.git

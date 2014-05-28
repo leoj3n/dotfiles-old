@@ -9,6 +9,28 @@ cheatsheet do
   introduction "@leoj3n's Dash.app cheatsheet"
 
   category do
+    id 'Alfred.app'
+
+    entry do
+      command 'FN+SPACE'
+      name 'Alfred Hotkey — Show Alfred'
+    end
+  end
+
+  category do
+    id 'SwitchResX Control.app'
+
+    entry do
+      command 'CTRL+ESC'
+      name 'Quit SwitchResX Daemon'
+    end
+    entry do
+      command 'CMD+F12'
+      name 'Open SwitchResX Control'
+    end
+  end
+
+  category do
     id 'PCKeyboardHack.app'
 
     entry do

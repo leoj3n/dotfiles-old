@@ -1,6 +1,6 @@
 # Outside of home
 
-This directory is used symlink files outside of the users home directory (f.ex: `/etc`.
+This directory is used symlink files outside of the users home directory (f.ex: `/etc`).
 
 ## Adding links to the "outside"
 
@@ -26,4 +26,5 @@ mkdir -p ~/.homesick/repos/dotfiles/home/.homesick/repos/dotfiles/outside/links/
 cd ~/.homesick/repos/dotfiles/home/.homesick/repos/dotfiles/outside/links/etc
 ln -s ../../../../../../../outside/linked/etc/shells shells
 ln -s ../../../../../../../outside/linked/etc/paths paths
+sudo ~/.homeshick link
 ~~~

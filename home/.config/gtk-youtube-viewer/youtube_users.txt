@@ -4,6 +4,7 @@ AtheistsAreSkeptics
 Best0fScience
 BigThink
 breakingtheset
+ComputerPhile
 FOSDEMtalks
 Google
 GoogleChrome
@@ -11,9 +12,11 @@ GoogleDevelopers
 GoogleTechTalks
 Gotbletu
 KhanAcademy
+MinutePhysics
 MIT
 NASAtelevision
 NatCen4ScienceEd
+NumberPhile
 ProfessorFink
 ScienceChannel
 SciShow
