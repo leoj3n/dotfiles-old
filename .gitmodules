@@ -120,3 +120,6 @@
 [submodule "submodules/cli/ttygif"]
 	path = submodules/cli/ttygif
 	url = https://github.com/icholy/ttygif.git
+[submodule "submodules/chrome/YouTubeCenter"]
+	path = submodules/chrome/YouTubeCenter
+	url = https://github.com/YePpHa/YouTubeCenter.git
