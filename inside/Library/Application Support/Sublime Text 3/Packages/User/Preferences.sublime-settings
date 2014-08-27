@@ -21,9 +21,15 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"SublimeCodeIntel",
+		"Markdown Preview",
+		"SublimeLinter",
+		"Syntax Highlighting for Sass",
+		"CTags",
+		"Xdebug Client",
 		"Markdown",
-		"AdvancedNewFile"
+		"TernJS",
+		"LiveStyle",
+		"Phpcs"
 	],
 	"rulers":
 	[

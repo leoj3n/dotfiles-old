@@ -1097,6 +1097,7 @@ class SublimelinterClearCachesCommand(sublime_plugin.WindowCommand):
         """Run the command."""
         util.clear_path_caches()
         util.get_rc_settings.cache_clear()
+        util.find_file.cache_clear()
         linter.Linter.clear_settings_caches()
 
 
@@ -1169,7 +1170,7 @@ class SublimelinterReportCommand(sublime_plugin.WindowCommand):
 
                         for line, messages in items:
                             for col, message in messages:
-                                out += '    {:>{width}}: {}\n'.format(line, message, width=width)
+                                out += '    {:>{width}}: {}\n'.format(line + 1, message, width=width)
 
                 output.insert(edit, output.size(), out)
 
