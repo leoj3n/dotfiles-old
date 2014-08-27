@@ -14,5 +14,7 @@ homeshick clone leoj3n/dotfiles
 npm install
 ~~~
 
+Add Chrome extensions manually from `submodules/chrome`.
+
 
 
