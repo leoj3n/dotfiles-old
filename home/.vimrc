@@ -36,7 +36,9 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'pangloss/vim-javascript'
 Plugin 'stephpy/vim-php-cs-fixer'
+Plugin 'terryma/vim-multiple-cursors'
 Plugin 'sumpygump/php-documentor-vim'
+Plugin 'editorconfig/editorconfig-vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
@@ -122,6 +124,7 @@ set clipboard=unnamed " allow yy, etc. to interact with OS X clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 nmap <F8> :TagbarToggle<CR>
+set pastetoggle=<F4>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
