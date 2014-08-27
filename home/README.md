@@ -186,6 +186,14 @@ Binary executables.
 
 Firefox automation macros and related datasets/downloads.
 
+### [.asana-client](.asana-client)
+
+CLI Asana API key secret.
+
+### [.asepriterc](.asepriterc)
+
+Sprite editor config.
+
 ## Ignore
 
 _Ignore_ section manually reviewed for validity on __May 9, 2014__.
@@ -215,6 +223,7 @@ These dotfiles contain no important data or configuration.
 * .lein: Leiningen for Clojure self-use directory.
 * .local: Common directory for temporary history and database files.
 * .m2: Apache Maven repos.
+* .matplotlib: Python 2D plotting library cache.
 * .mediafire: File sharing logs and screenshots.
 * .meteor: Framework repos.
 * .meteorite: Package manager repos.
@@ -241,6 +250,7 @@ These dotfiles contain no important data or configuration.
 * Google Drive: Synced files.
 * Mail: CLI email management databases.
 * MediaFire: Synced files.
+* ownCloud: Synced files.
 * perl5: Perl 5 and perlbrew libs/sources.
 * SparkleShare: Synced repos.
 * VirtualBox VMs: Virtual machine images.
@@ -252,6 +262,7 @@ These directories are empty (or contain yet more empty directories).
 * .gnome2
 * .gnome2_private
 * .lightpaper
+* .nvm
 * .plex
 * .thumb
 
