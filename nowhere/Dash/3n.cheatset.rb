@@ -361,6 +361,24 @@ cheatsheet do
   end
 
   category do
+    id 'Cursorcerer.prefpane'
+
+    entry do
+      command 'HYPER+K'
+      name 'Show/hide cursor'
+    end
+  end
+
+  category do
+    id 'AccessMenuBarApps.app'
+
+    entry do
+      command 'HYPER+6'
+      name 'Show/hide application menu bar items'
+    end
+  end
+
+  category do
     id 'AntiRSI.app'
 
     entry do
