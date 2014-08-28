@@ -22,14 +22,15 @@
 	"ignored_packages":
 	[
 		"Markdown Preview",
-		"SublimeLinter",
-		"Syntax Highlighting for Sass",
 		"CTags",
+		"SublimeLinter",
+		"Phpcs",
 		"Xdebug Client",
-		"Markdown",
 		"TernJS",
-		"LiveStyle",
-		"Phpcs"
+		"Markdown",
+		"Syntax Highlighting for Sass",
+		"StopInsertOnFocusLost",
+		"LiveStyle"
 	],
 	"rulers":
 	[

@@ -2,6 +2,7 @@
 	"installed_packages":
 	[
 		"AdvancedNewFile",
+		"ApplySyntax",
 		"BracketHighlighter",
 		"CTags",
 		"CursorRuler",
@@ -11,6 +12,7 @@
 		"EditorConfig",
 		"Emmet",
 		"Gist",
+		"GitGutter",
 		"HTML-CSS-JS Prettify",
 		"Jade",
 		"JSHint Gutter",
@@ -30,6 +32,7 @@
 		"PHPUnit Completions",
 		"Pretty JSON",
 		"Project Sync",
+		"SCSS",
 		"SideBarEnhancements",
 		"SmartMarkdown",
 		"SublimeBlockCursor",
