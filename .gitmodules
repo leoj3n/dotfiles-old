@@ -123,3 +123,6 @@
 [submodule "submodules/chrome/YouTubeCenter"]
 	path = submodules/chrome/YouTubeCenter
 	url = https://github.com/YePpHa/YouTubeCenter.git
+[submodule "submodules/osx/IDE-Preferences"]
+	path = submodules/osx/IDE-Preferences
+	url = https://github.com/Pivotal-Boulder/IDE-Preferences.git
