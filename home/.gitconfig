@@ -54,4 +54,3 @@
   protocol = https
 
 [init]
-  templatedir = /Users/leoj/.git-template-with-git-hooks
