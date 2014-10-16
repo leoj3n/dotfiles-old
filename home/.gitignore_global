@@ -41,3 +41,9 @@ ehthumbs.db
 Thumbs.db
 *.orig
 
+# Editor generated files #
+##########################
+*.swp
+*.swo
+
+
