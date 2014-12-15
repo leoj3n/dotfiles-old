@@ -126,3 +126,6 @@
 [submodule "submodules/osx/IDE-Preferences"]
 	path = submodules/osx/IDE-Preferences
 	url = https://github.com/Pivotal-Boulder/IDE-Preferences.git
+[submodule "submodules/chrome/require-navigator"]
+	path = submodules/chrome/require-navigator
+	url = https://github.com/lxe/require-navigator.git
