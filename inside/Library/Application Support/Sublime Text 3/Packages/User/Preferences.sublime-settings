@@ -21,16 +21,16 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Xdebug Client",
-		"StopInsertOnFocusLost",
-		"SublimeLinter",
-		"Phpcs",
-		"Markdown",
 		"Markdown Preview",
-		"Syntax Highlighting for Sass",
+		"Xdebug Client",
 		"TernJS",
 		"LiveStyle",
-		"CTags"
+		"Markdown",
+		"Phpcs",
+		"CTags",
+		"SublimeLinter",
+		"StopInsertOnFocusLost",
+		"Syntax Highlighting for Sass"
 	],
 	"rulers":
 	[
