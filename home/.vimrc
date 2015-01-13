@@ -14,6 +14,7 @@ Plugin 'gmarik/Vundle.vim'
 " GitHub plugins.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+Plugin 'dahu/vim-lotr'
 Plugin 'tpope/vim-git'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mattn/gist-vim'
@@ -125,6 +126,7 @@ set clipboard=unnamed " allow yy, etc. to interact with OS X clipboard
 
 nmap <F8> :TagbarToggle<CR>
 set pastetoggle=<F4>
+cmap w!! w !sudo tee > /dev/null %
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " STATUS LINE
