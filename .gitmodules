@@ -40,9 +40,6 @@
 [submodule "submodules/osx/youtube-viewer"]
 	path = submodules/osx/youtube-viewer
 	url = git://github.com/trizen/youtube-viewer.git
-[submodule "submodules/php/pfff"]
-	path = submodules/php/pfff
-	url = git://github.com/facebook/pfff.git
 [submodule "submodules/chrome/Github-Omnibox"]
 	path = submodules/chrome/Github-Omnibox
 	url = git@github.com:ProLoser/Github-Omnibox.git
@@ -114,9 +111,6 @@
 [submodule "submodules/cli/mvb"]
 	path = submodules/cli/mvb
 	url = https://github.com/bfontaine/mvb
-[submodule "submodules/chrome/httpswitchboard"]
-	path = submodules/chrome/httpswitchboard
-	url = https://github.com/gorhill/httpswitchboard.git
 [submodule "submodules/cli/ttygif"]
 	path = submodules/cli/ttygif
 	url = https://github.com/icholy/ttygif.git
@@ -129,3 +123,15 @@
 [submodule "submodules/chrome/require-navigator"]
 	path = submodules/chrome/require-navigator
 	url = https://github.com/lxe/require-navigator.git
+[submodule "submodules/chrome/tab-snooze"]
+	path = submodules/chrome/tab-snooze
+	url = https://github.com/athyuttamre/tab-snooze.git
+[submodule "submodules/chrome/uBlock"]
+	path = submodules/chrome/uBlock
+	url = https://github.com/gorhill/uBlock.git
+[submodule "submodules/cli/vassh"]
+	path = submodules/cli/vassh
+	url = https://github.com/x-team/vassh.git
+[submodule "submodules/chrome/chrome-tab-modifier"]
+	path = submodules/chrome/chrome-tab-modifier
+	url = https://github.com/sylouuu/chrome-tab-modifier.git
