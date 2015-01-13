@@ -23,14 +23,14 @@
 	[
 		"Markdown Preview",
 		"Xdebug Client",
-		"TernJS",
-		"LiveStyle",
+		"Syntax Highlighting for Sass",
 		"Markdown",
-		"Phpcs",
-		"CTags",
 		"SublimeLinter",
 		"StopInsertOnFocusLost",
-		"Syntax Highlighting for Sass"
+		"TernJS",
+		"CTags",
+		"LiveStyle",
+		"Phpcs"
 	],
 	"rulers":
 	[

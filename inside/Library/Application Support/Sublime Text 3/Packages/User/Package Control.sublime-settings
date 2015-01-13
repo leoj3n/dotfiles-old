@@ -1,4 +1,12 @@
 {
+	"in_process_packages":
+	[
+	],
+	"installed_dependencies":
+	[
+		"0_package_control_loader",
+		"bz2"
+	],
 	"installed_packages":
 	[
 		"AdvancedNewFile",
@@ -16,6 +24,8 @@
 		"GitGutter",
 		"HTML-CSS-JS Prettify",
 		"Jade",
+		"JavaScriptNext - ES6 Syntax",
+		"JsFormat",
 		"JSHint Gutter",
 		"JsRun",
 		"LESS",
@@ -24,6 +34,7 @@
 		"Markdown Preview",
 		"MarkdownEditing",
 		"Open-Include",
+		"Package Control",
 		"PackageResourceViewer",
 		"PHP-Twig",
 		"PhpCodeGen",
