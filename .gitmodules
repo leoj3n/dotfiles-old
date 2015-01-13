@@ -129,9 +129,6 @@
 [submodule "submodules/chrome/uBlock"]
 	path = submodules/chrome/uBlock
 	url = https://github.com/gorhill/uBlock.git
-[submodule "submodules/cli/vassh"]
-	path = submodules/cli/vassh
-	url = https://github.com/x-team/vassh.git
 [submodule "submodules/chrome/chrome-tab-modifier"]
 	path = submodules/chrome/chrome-tab-modifier
 	url = https://github.com/sylouuu/chrome-tab-modifier.git
