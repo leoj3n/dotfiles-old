@@ -5,15 +5,8 @@
 		"bin-dir": "bin"
 	},
 	"require": {
-		"wp-cli/wp-cli": "dev-master",
 		"d11wtq/boris": "dev-master",
 		"cordoval/gush": "dev-master",
 		"bldr-io/bldr": "~2.0.0"
-	},
-	"repositories": {
-		"wp-cli": {
-			"type": "composer",
-			"url": "http://wp-cli.org/package-index/"
-		}
 	}
 }
