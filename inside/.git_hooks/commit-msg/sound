@@ -11,7 +11,7 @@ function run_test {
       | head -1
   )
 
-  afplay "${dir}/${snd}"
+  afplay -v 0.3 "${dir}/${snd}" 2>&1 &
 }
 
 case "${1}" in
