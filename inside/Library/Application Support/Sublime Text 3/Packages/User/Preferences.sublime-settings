@@ -17,20 +17,21 @@
 		".git"
 	],
 	"font_face": "Menlo",
-	"font_size": 12,
+	"font_size": 13,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Markdown Preview",
-		"Xdebug Client",
-		"Syntax Highlighting for Sass",
-		"Markdown",
-		"SublimeLinter",
 		"StopInsertOnFocusLost",
-		"TernJS",
+		"Phpcs",
+		"Markdown Preview",
+		"Markdown",
+		"Xdebug Client",
+		"SublimeLinter",
+		"Markdown Extended",
 		"CTags",
 		"LiveStyle",
-		"Phpcs"
+		"Syntax Highlighting for Sass",
+		"TernJS"
 	],
 	"rulers":
 	[
