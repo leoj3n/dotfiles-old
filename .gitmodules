@@ -69,9 +69,6 @@
 [submodule "submodules/chrome/blame_parent"]
 	path = submodules/chrome/blame_parent
 	url = git@github.com:chancancode/blame_parent.git
-[submodule "submodules/chrome/videospeed"]
-	path = submodules/chrome/videospeed
-	url = git@github.com:igrigorik/videospeed.git
 [submodule "submodules/cli/speedread"]
 	path = submodules/cli/speedread
 	url = git@github.com:pasky/speedread.git
