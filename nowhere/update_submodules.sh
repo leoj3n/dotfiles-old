@@ -27,6 +27,12 @@ echo
 cd "${DOTFILES}/submodules/chrome/vimium" && cake build
 
 echo
+echo 'Build devtools theme (zero dark matrix)...'
+echo
+
+cd "${DOTFILES}/submodules/chrome/zero-base-themes" && grunt
+
+echo
 echo 'Finished updating submodules.'
 echo
 
