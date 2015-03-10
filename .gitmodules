@@ -129,3 +129,6 @@
 [submodule "submodules/chrome/chrome-tab-modifier"]
 	path = submodules/chrome/chrome-tab-modifier
 	url = https://github.com/sylouuu/chrome-tab-modifier.git
+[submodule "submodules/chrome/polymer-ready-chrome-extension"]
+	path = submodules/chrome/polymer-ready-chrome-extension
+	url = https://github.com/beaufortfrancois/polymer-ready-chrome-extension.git
