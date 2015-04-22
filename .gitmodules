@@ -43,6 +43,7 @@
 [submodule "submodules/chrome/Github-Omnibox"]
 	path = submodules/chrome/Github-Omnibox
 	url = git@github.com:ProLoser/Github-Omnibox.git
+	branch = gh-pages
 [submodule "submodules/chrome/chrome-github-avatars"]
 	path = submodules/chrome/chrome-github-avatars
 	url = git://github.com/anasnakawa/chrome-github-avatars.git
@@ -78,9 +79,6 @@
 [submodule "submodules/chrome/isometric-contributions"]
 	path = submodules/chrome/isometric-contributions
 	url = git@github.com:jasonlong/isometric-contributions.git
-[submodule "submodules/chrome/TCDR-Chrome-Extension"]
-	path = submodules/chrome/TCDR-Chrome-Extension
-	url = git@github.com:squaresurf/TCDR-Chrome-Extension.git
 [submodule "submodules/chrome/zero-base-themes"]
 	path = submodules/chrome/zero-base-themes
 	url = git@github.com:mauricecruz/zero-base-themes.git
@@ -132,3 +130,12 @@
 [submodule "submodules/chrome/polymer-ready-chrome-extension"]
 	path = submodules/chrome/polymer-ready-chrome-extension
 	url = https://github.com/beaufortfrancois/polymer-ready-chrome-extension.git
+[submodule "submodules/chrome/scrollbar-diet"]
+	path = submodules/chrome/scrollbar-diet
+	url = git://github.com/pirxpilot/scrollbar-diet.git
+[submodule "submodules/chrome/grooveshark-enhancement-suite"]
+	path = submodules/chrome/grooveshark-enhancement-suite
+	url = git://github.com/theabraham/grooveshark-enhancement-suite.git
+[submodule "submodules/chrome/tinysong-chrome-extension"]
+	path = submodules/chrome/tinysong-chrome-extension
+	url = git://github.com/dhabersack/tinysong-chrome-extension.git
