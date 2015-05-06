@@ -145,3 +145,6 @@
 [submodule "submodules/chrome/Looks-Good-To-Me"]
 	path = submodules/chrome/Looks-Good-To-Me
 	url = https://github.com/nikolaiwarner/Looks-Good-To-Me.git
+[submodule "submodules/chrome/github-cue"]
+	path = submodules/chrome/github-cue
+	url = https://github.com/punchagan/github-cue.git
