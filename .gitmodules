@@ -142,3 +142,6 @@
 [submodule "submodules/chrome/github-improved"]
 	path = submodules/chrome/github-improved
 	url = git://github.com/johan/github-improved.git
+[submodule "submodules/chrome/Looks-Good-To-Me"]
+	path = submodules/chrome/Looks-Good-To-Me
+	url = https://github.com/nikolaiwarner/Looks-Good-To-Me.git
