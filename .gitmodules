@@ -139,3 +139,6 @@
 [submodule "submodules/chrome/tinysong-chrome-extension"]
 	path = submodules/chrome/tinysong-chrome-extension
 	url = git://github.com/dhabersack/tinysong-chrome-extension.git
+[submodule "submodules/chrome/github-improved"]
+	path = submodules/chrome/github-improved
+	url = git://github.com/johan/github-improved.git
