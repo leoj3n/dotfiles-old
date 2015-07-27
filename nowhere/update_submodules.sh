@@ -73,7 +73,6 @@ echo 'Polymer Ready: ~/.homesick/repos/dotfiles/submodules/chrome/polymer-ready-
 echo 'Github Node.js require() navigator: ~/.homesick/repos/dotfiles/submodules/chrome/require-navigator'
 echo 'Scrollbar diet: ~/.homesick/repos/dotfiles/submodules/chrome/scrollbar-diet'
 echo 'Tab Snooze: ~/.homesick/repos/dotfiles/submodules/chrome/tab-snooze'
-echo 'Tinysong for Google Chrome™: ~/.homesick/repos/dotfiles/submodules/chrome/tinysong-chrome-extension'
 echo 'uBlock: ~/.homesick/repos/dotfiles/submodules/chrome/uBlock/dist/build/uBlock0.chromium'
 echo 'Vimium: ~/.homesick/repos/dotfiles/submodules/chrome/vimium'
 echo 'YouTube Center Developer Build: ~/.homesick/repos/dotfiles/submodules/chrome/YouTubeCenter/build/YouTubeCenter'
