@@ -3,138 +3,116 @@ _ = require 'underscore-plus'
 SearchViewModel = require '../view-models/search-view-model'
 {Input} = require '../view-models/view-model'
 {Point, Range} = require 'atom'
+settings = require '../settings'
 
 class SearchBase extends MotionWithInput
-  @currentSearch: null
-  constructor: (@editor, @vimState) ->
-    super(@editor, @vimState)
-    Search.currentSearch = @
-    @reverse = @initiallyReversed = false
+  operatesInclusively: false
 
-  repeat: (opts = {}) =>
-    reverse = opts.backwards
-    if @initiallyReversed and reverse
-      @reverse = false
-    else
-      @reverse = reverse or @initiallyReversed
-    @
+  constructor: (@editor, @vimState, options = {}) ->
+    super(@editor, @vimState)
+    @reverse = @initiallyReversed = false
+    @updateCurrentSearch() unless options.dontUpdateCurrentSearch
 
   reversed: =>
     @initiallyReversed = @reverse = true
-    @
+    @updateCurrentSearch()
+    this
 
-  execute: (count=1) ->
-    @scan()
-    @match count, (pos) =>
-      @editor.setCursorBufferPosition(pos.range.start)
-
-  select: (count=1) ->
-    @scan()
-    selectionStart = @getSelectionStart()
-    @match count, (pos) =>
-      reversed = selectionStart.compare(pos.range.start) > 0
-      @editor.setSelectedBufferRange([selectionStart, pos.range.start], {reversed})
-    [true]
-
-  getSelectionStart: ->
-    cur = @editor.getCursorBufferPosition()
-    {start, end} = @editor.getSelectedBufferRange()
-    if start.compare(cur) is 0 then end else start
-
-  match: (count, callback) ->
-    pos = @matches[(count - 1) % @matches.length]
-    if pos?
-      callback(pos)
+  moveCursor: (cursor, count=1) ->
+    ranges = @scan(cursor)
+    if ranges.length > 0
+      range = ranges[(count - 1) % ranges.length]
+      cursor.setBufferPosition(range.start)
     else
       atom.beep()
 
-  scan: ->
-    addToMod = (modifier) =>
-      if mod.indexOf(modifier) == -1
-        return mod += modifier
-      else return
-    term = @input.characters
-    mod = ''
-    addToMod('g')
-    usingSmartcase = atom.config.get 'vim-mode.useSmartcaseForSearch'
-    if usingSmartcase && !term.match('[A-Z]')
-      addToMod('i')
-    if term.indexOf('\\c') != -1
-      term = term.replace('\\c','')
-      addToMod('i')
-    regexp =
-      try
-        new RegExp(term, mod)
-      catch
-        new RegExp(_.escapeRegExp(term), mod)
+  scan: (cursor) ->
+    currentPosition = cursor.getBufferPosition()
 
-    cur = @editor.getCursorBufferPosition()
-    matchPoints = []
-    iterator = (item) =>
-      matchPointItem =
-        range: item.range
-      matchPoints.push(matchPointItem)
-
-    @editor.scan(regexp, iterator)
-
-    previous = _.filter matchPoints, (point) =>
-      if @reverse
-        point.range.start.compare(cur) < 0
+    [rangesBefore, rangesAfter] = [[], []]
+    @editor.scan @getSearchTerm(@input.characters), ({range}) =>
+      isBefore = if @reverse
+        range.start.compare(currentPosition) < 0
       else
-        point.range.start.compare(cur) <= 0
+        range.start.compare(currentPosition) <= 0
 
-    after = _.difference(matchPoints, previous)
-    after.push(previous...)
-    after = after.reverse() if @reverse
+      if isBefore
+        rangesBefore.push(range)
+      else
+        rangesAfter.push(range)
 
-    @matches = after
+    if @reverse
+      rangesAfter.concat(rangesBefore).reverse()
+    else
+      rangesAfter.concat(rangesBefore)
+
+  getSearchTerm: (term) ->
+    modifiers = {'g': true}
+
+    if not term.match('[A-Z]') and settings.useSmartcaseForSearch()
+      modifiers['i'] = true
+
+    if term.indexOf('\\c') >= 0
+      term = term.replace('\\c', '')
+      modifiers['i'] = true
+
+    modFlags = Object.keys(modifiers).join('')
+
+    try
+      new RegExp(term, modFlags)
+    catch
+      new RegExp(_.escapeRegExp(term), modFlags)
+
+  updateCurrentSearch: ->
+    @vimState.globalVimState.currentSearch.reverse = @reverse
+    @vimState.globalVimState.currentSearch.initiallyReversed = @initiallyReversed
+
+  replicateCurrentSearch: ->
+    @reverse = @vimState.globalVimState.currentSearch.reverse
+    @initiallyReversed = @vimState.globalVimState.currentSearch.initiallyReversed
 
 class Search extends SearchBase
   constructor: (@editor, @vimState) ->
     super(@editor, @vimState)
-    @viewModel = new SearchViewModel(@)
-    Search.currentSearch = @
-    @reverse = @initiallyReversed = false
-
-  compose: (input) ->
-    super(input)
-    @viewModel.value = @input.characters
+    @viewModel = new SearchViewModel(this)
 
 class SearchCurrentWord extends SearchBase
   @keywordRegex: null
+
   constructor: (@editor, @vimState) ->
     super(@editor, @vimState)
-    Search.currentSearch = @
-    @reverse = @initiallyReversed = false
 
     # FIXME: This must depend on the current language
     defaultIsKeyword = "[@a-zA-Z0-9_\-]+"
     userIsKeyword = atom.config.get('vim-mode.iskeyword')
     @keywordRegex = new RegExp(userIsKeyword or defaultIsKeyword)
 
-    @input = new Input(@getCurrentWordMatch())
+    searchString = @getCurrentWordMatch()
+    @input = new Input(searchString)
+    @vimState.pushSearchHistory(searchString) unless searchString is @vimState.getSearchHistoryItem()
 
-  getCurrentWord: (onRecursion=false) ->
+  getCurrentWord: ->
     cursor = @editor.getLastCursor()
-    wordRange  = cursor.getCurrentWordBufferRange(wordRegex: @keywordRegex)
-    characters = @editor.getTextInBufferRange(wordRange)
+    wordStart = cursor.getBeginningOfCurrentWordBufferPosition(wordRegex: @keywordRegex, allowPrevious: false)
+    wordEnd   = cursor.getEndOfCurrentWordBufferPosition      (wordRegex: @keywordRegex, allowNext: false)
+    cursorPosition = cursor.getBufferPosition()
 
-    # We are not standing on top of a word, let's try to
-    # get to the next word and try again
-    if characters.length is 0 and not onRecursion
-      if @cursorIsOnEOF()
-        ""
-      else
-        cursor.moveToNextWordBoundary(wordRegex: @keywordRegex)
-        @getCurrentWord(true)
-    else
-      characters
+    if wordEnd.column is cursorPosition.column
+      # either we don't have a current word, or it ends on cursor, i.e. precedes it, so look for the next one
+      wordEnd = cursor.getEndOfCurrentWordBufferPosition      (wordRegex: @keywordRegex, allowNext: true)
+      return "" if wordEnd.row isnt cursorPosition.row # don't look beyond the current line
 
-  cursorIsOnEOF: ->
-    cursor = @editor.getLastCursor()
+      cursor.setBufferPosition wordEnd
+      wordStart = cursor.getBeginningOfCurrentWordBufferPosition(wordRegex: @keywordRegex, allowPrevious: false)
+
+    cursor.setBufferPosition wordStart
+
+    @editor.getTextInBufferRange([wordStart, wordEnd])
+
+  cursorIsOnEOF: (cursor) ->
     pos = cursor.getNextWordBoundaryBufferPosition(wordRegex: @keywordRegex)
     eofPos = @editor.getEofBufferPosition()
-    pos.row == eofPos.row && pos.column == eofPos.column
+    pos.row is eofPos.row and pos.column is eofPos.column
 
   getCurrentWordMatch: ->
     characters = @getCurrentWord()
@@ -148,144 +126,85 @@ class SearchCurrentWord extends SearchBase
   execute: (count=1) ->
     super(count) if @input.characters.length > 0
 
+OpenBrackets = ['(', '{', '[']
+CloseBrackets = [')', '}', ']']
+AnyBracket = new RegExp(OpenBrackets.concat(CloseBrackets).map(_.escapeRegExp).join("|"))
 
 class BracketMatchingMotion extends SearchBase
-  @keywordRegex: null
-  constructor: (@editor, @vimState) ->
-    super(@editor, @vimState)
-    Search.currentSearch = @
-    @reverse = @initiallyReversed = false
-    @characters         = [')','(','}','{',']','[']
-    @charactersMatching = ['(',')','{','}','[',']']
-    @reverseSearch      = [true,false,true,false,true,false]
-
-    # FIXME: This must depend on the current language
-    @input = new Input(@getCurrentWordMatch())
-
-  getCurrentWord: (onRecursion=false) ->
-    cursor = @editor.getLastCursor()
-    tempPoint = cursor.getBufferPosition().toArray()
-    @character = @editor.getTextInBufferRange([cursor.getBufferPosition(),new Point(tempPoint[0],tempPoint[1] + 1)])
-    @startUp = false;
-    index = @characters.indexOf(@character)
-    if index >= 0
-      @matching = @charactersMatching[index]
-      @reverse = @reverseSearch[index]
-    else
-      @startUp = true
-
-    @character
-
-  getCurrentWordMatch: ->
-    characters = @getCurrentWord()
-    characters
+  operatesInclusively: true
 
   isComplete: -> true
 
-  searchFor:(character) ->
-    term = character
-    regexp =
-        new RegExp(_.escapeRegExp(term), 'g')
+  searchForMatch: (startPosition, reverse, inCharacter, outCharacter) ->
+    depth = 0
+    point = startPosition.copy()
+    lineLength = @editor.lineTextForBufferRow(point.row).length
+    eofPosition = @editor.getEofBufferPosition().translate([0, 1])
+    increment = if reverse then -1 else 1
 
-    cur = @editor.getCursorBufferPosition()
-    matchPoints = []
-    iterator = (item) =>
-      matchPointItem =
-        range: item.range
-      matchPoints.push(matchPointItem)
+    loop
+      character = @characterAt(point)
+      depth++ if character is inCharacter
+      depth-- if character is outCharacter
 
-    @editor.scan(regexp, iterator)
+      return point if depth is 0
 
-    previous = _.filter matchPoints, (point) =>
-      if @reverse
-        point.range.start.compare(cur) < 0
-      else
-        point.range.start.compare(cur) <= 0
+      point.column += increment
 
-    if @reverse
-      after = []
-      after.push(previous...)
-      after = after.reverse()
+      return null if depth < 0
+      return null if point.isEqual([0, -1])
+      return null if point.isEqual(eofPosition)
+
+      if point.column < 0
+        point.row--
+        lineLength = @editor.lineTextForBufferRow(point.row).length
+        point.column = lineLength - 1
+      else if point.column >= lineLength
+        point.row++
+        lineLength = @editor.lineTextForBufferRow(point.row).length
+        point.column = 0
+
+  characterAt: (position) ->
+    @editor.getTextInBufferRange([position, position.translate([0, 1])])
+
+  getSearchData: (position) ->
+    character = @characterAt(position)
+    if (index = OpenBrackets.indexOf(character)) >= 0
+      [character, CloseBrackets[index], false]
+    else if (index = CloseBrackets.indexOf(character)) >= 0
+      [character, OpenBrackets[index], true]
     else
-      after = _.difference(matchPoints, previous)
+      []
 
-    matches = after
-    matches
+  moveCursor: (cursor) ->
+    startPosition = cursor.getBufferPosition()
 
-  select: (count=1) ->
-    @scan()
+    [inCharacter, outCharacter, reverse] = @getSearchData(startPosition)
 
-    cur = if @startUp then @startUpPos else @editor.getCursorBufferPosition()
+    unless inCharacter?
+      restOfLine = [startPosition, [startPosition.row, Infinity]]
+      @editor.scanInBufferRange AnyBracket, restOfLine, ({range, stop}) ->
+        startPosition = range.start
+        stop()
 
-    @match count, (pos) =>
-      if @reverse
-        tempPoint = cur.toArray()
-        @editor.setSelectedBufferRange([pos.range.start, new Point(tempPoint[0],tempPoint[1] + 1)], {reversed: true})
-      else
-        tempPoint = pos.range.start.toArray()
-        @editor.setSelectedBufferRange([ cur, new Point(tempPoint[0],tempPoint[1] + 1)], {reversed: true})
-    [true]
+    [inCharacter, outCharacter, reverse] = @getSearchData(startPosition)
 
-  scan: ->
-    if @startUp
-      @startUpPos = @editor.getCursorBufferPosition()
-      min = -1
-      iwin = -1
-      for i in [0..@characters.length - 1]
-        matchesCharacter = @searchFor(@characters[i])
-        if matchesCharacter.length > 0
-          dst = matchesCharacter[0].range.start.toArray()
-          if @startUpPos.toArray()[0] == dst[0] and @startUpPos.toArray()[1] < dst[1]
-            if dst[1] < min or min == -1
-              line = dst[0]
-              min = dst[1]
-              iwin = i
-      if iwin != -1
-        @editor.setCursorBufferPosition(new Point(line,min))
-        @character = @characters[iwin]
-        @matching = @charactersMatching[iwin]
-        @reverse = @reverseSearch[iwin]
+    return unless inCharacter?
 
-    matchesCharacter = @searchFor(@character)
-    matchesMatching = @searchFor(@matching)
-    if matchesMatching.length == 0
-      @matches = []
-    else
-      charIndex = 0;
-      matchIndex = 0;
-      counter = 1;
-      winner = -1
-      if @reverse
-        compVal = 1
-      else
-        compVal = -1
-      while counter > 0
-        if matchIndex < matchesMatching.length and charIndex < matchesCharacter.length
-          if matchesCharacter[charIndex].range.compare(matchesMatching[matchIndex].range) == compVal
-            counter = counter + 1
-            charIndex = charIndex + 1
-          else
-            counter = counter - 1
-            winner = matchIndex
-            matchIndex = matchIndex + 1
-        else if matchIndex < matchesMatching.length
-          counter = counter - 1
-          winner = matchIndex
-          matchIndex = matchIndex + 1
-        else
-          break
+    if matchPosition = @searchForMatch(startPosition, reverse, inCharacter, outCharacter)
+      cursor.setBufferPosition(matchPosition)
 
-      retVal = []
-      if counter == 0
-        retVal.push(matchesMatching[winner])
-      @matches = retVal
+class RepeatSearch extends SearchBase
+  constructor: (@editor, @vimState) ->
+    super(@editor, @vimState, dontUpdateCurrentSearch: true)
+    @input = new Input(@vimState.getSearchHistoryItem(0) ? "")
+    @replicateCurrentSearch()
 
-    if @matches.length == 0 and @startUp
-      @editor.setCursorBufferPosition(@startUpPos)
+  isComplete: -> true
+
+  reversed: ->
+    @reverse = not @initiallyReversed
+    this
 
 
-
-  execute: (count=1) ->
-    super(count) if @input.characters.length > 0
-
-module.exports = {Search, SearchCurrentWord,BracketMatchingMotion}
+module.exports = {Search, SearchCurrentWord, BracketMatchingMotion, RepeatSearch}

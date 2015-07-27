@@ -2,11 +2,13 @@ Shell = require 'shell'
 {Range} = require 'atom'
 
 module.exports =
-  configDefaults:
-    openCodebug: true
+  config:
+    openCodebug:
+      type: 'boolean'
+      default: true
 
   activate: ->
-    atom.workspaceView.command 'codebug:break', '.editor', => @codebugBreak()
+    atom.commands.add 'atom-workspace', 'codebug:break', => @codebugBreak()
 
   codebugBreak: ->
     if @isOpenable()
@@ -16,12 +18,12 @@ module.exports =
       @reportValidationErrors()
 
   file: ->
-    activeItem = atom.workspaceView.getActivePaneItem()
+    activeItem = atom.workspace.getActivePaneItem()
     if activeItem.buffer.file?
       encodeURI(activeItem.buffer.file.path)
 
   getLineNumber: ->
-    lineRange = atom.workspaceView.getActivePaneItem()?.getSelectedBufferRange?()
+    lineRange = atom.workspace.getActivePaneItem()?.getSelectedBufferRange?()
     if lineRange
       lineRange = Range.fromObject(lineRange)
       startRow = lineRange.start.row + 1

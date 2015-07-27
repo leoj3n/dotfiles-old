@@ -26,6 +26,9 @@ class Prefix
   select: ->
     @composedObject.select?(@count)
 
+  isLinewise: ->
+    @composedObject.isLinewise()
+
 #
 # Used to track the number of times either a motion or operator should
 # be repeated.
@@ -62,4 +65,4 @@ class Register extends Prefix
     super(composedObject)
     composedObject.register = @name if composedObject.register?
 
-module.exports = { Repeat, Register}
+module.exports = {Repeat, Register}

@@ -14,13 +14,14 @@
   * `cc` - linewise
   * `c2c` - repeated linewise
   * `C` - change to the end of the line
+* [Adding and subtracting](http://vimhelp.appspot.com/change.txt.html#CTRL-A)
+  * `ctrl-a` and `ctrl-x` in normal mode to increase/decrease numbers in text
 * [Yank](http://vimhelp.appspot.com/change.txt.html#yank)
   * `vwy` - works in visual mode
   * `yw` - with a motion
   * `yy` - linewise
   * `y2y` - repeated linewise
-  * `"ayy` - supports registers (only named a-h, pending more
-    advanced atom keymap support)
+  * `"ayy` - supports registers (named a-z, A-Z for append, *, +, %, _)
   * `Y` - linewise
 * Indent/Outdent/Auto-indent
   * `vw>` - works in visual mode
@@ -30,9 +31,13 @@
 * [Put](http://vimhelp.appspot.com/change.txt.html#p)
   * `p` - default register
   * `P` - pastes the default register before the current cursor.
-  * `"ap` - supports registers (only named a-h, pending more
-    advanced atom keymap support)
+  * `"ap` - supports registers
+  * `ctrl-r a` or `ctrl-r "` etc. - supports pasting register content in insert mode
 * [Join](http://vimhelp.appspot.com/change.txt.html#J)
   * `J` - joins the current line with the immediately following line.
 * [Mark](http://vimhelp.appspot.com/motion.txt.html#m)
   * `m[a-z][A-Z]` - marks the current cursor position
+* [Case](http://vimhelp.appspot.com/motion.txt.html#operator)
+  * `~` or `g~` - toggles case
+  * `gU`, or `U` in visual mode - changes to upper case
+  * `gu`, or `u` in visual mode - changes to lower case

@@ -1,6 +1,8 @@
+Grim  = require 'grim'
 _ = require 'underscore-plus'
 {Point, Range} = require 'atom'
 {Emitter, Disposable, CompositeDisposable} = require 'event-kit'
+settings = require './settings'
 
 Operators = require './operators/index'
 Prefixes = require './prefixes'
@@ -8,7 +10,6 @@ Motions = require './motions/index'
 
 TextObjects = require './text-objects'
 Utils = require './utils'
-Panes = require './panes'
 Scroll = require './scroll'
 
 module.exports =
@@ -17,7 +18,8 @@ class VimState
   opStack: null
   mode: null
   submode: null
-  initialSelectedRange: null
+  destroyed: false
+  replaceModeListener: null
 
   constructor: (@editorElement, @statusBarManager, @globalVimState) ->
     @emitter = new Emitter
@@ -26,102 +28,133 @@ class VimState
     @opStack = []
     @history = []
     @marks = {}
-    @desiredCursorColumn = null
-    params = {}
-    params.manager = this;
-    params.id = 0;
+    @subscriptions.add @editor.onDidDestroy => @destroy()
+
+    @subscriptions.add @editor.onDidChangeSelectionRange _.debounce(=>
+      return unless @editor?
+      if @editor.getSelections().every((selection) -> selection.isEmpty())
+        @activateNormalMode() if @mode is 'visual'
+      else
+        @activateVisualMode('characterwise') if @mode is 'normal'
+    , 100)
 
     @editorElement.classList.add("vim-mode")
-    @setupCommandMode()
-    if atom.config.get 'vim-mode.startInInsertMode'
+    @setupNormalMode()
+    if settings.startInInsertMode()
       @activateInsertMode()
     else
-      @activateCommandMode()
+      @activateNormalMode()
 
   destroy: ->
-    @subscriptions.dispose()
-    @deactivateInsertMode()
-    @editorElement.component.setInputEnabled(true)
-    @editorElement.classList.remove("vim-mode")
-    @editorElement.classList.remove("command-mode")
+    unless @destroyed
+      @destroyed = true
+      @emitter.emit 'did-destroy'
+      @subscriptions.dispose()
+      if @editor.isAlive()
+        @deactivateInsertMode()
+        @editorElement.component?.setInputEnabled(true)
+        @editorElement.classList.remove("vim-mode")
+        @editorElement.classList.remove("normal-mode")
+      @editor = null
+      @editorElement = null
 
   # Private: Creates the plugin's bindings
   #
   # Returns nothing.
-  setupCommandMode: ->
+  setupNormalMode: ->
     @registerCommands
-      'activate-command-mode': => @activateCommandMode()
+      'activate-normal-mode': => @activateNormalMode()
       'activate-linewise-visual-mode': => @activateVisualMode('linewise')
       'activate-characterwise-visual-mode': => @activateVisualMode('characterwise')
       'activate-blockwise-visual-mode': => @activateVisualMode('blockwise')
-      'reset-command-mode': => @resetCommandMode()
+      'reset-normal-mode': => @resetNormalMode()
       'repeat-prefix': (e) => @repeatPrefix(e)
+      'reverse-selections': (e) => @reverseSelections(e)
+      'undo': (e) => @undo(e)
+      'replace-mode-backspace': => @replaceModeUndo()
+      'insert-mode-put': (e) => @insertRegister(@registerName(e))
 
     @registerOperationCommands
-      'activate-insert-mode': => new Operators.Insert(@editor, @)
-      'substitute': => new Operators.Substitute(@editor, @)
-      'substitute-line': => new Operators.SubstituteLine(@editor, @)
-      'insert-after': => new Operators.InsertAfter(@editor, @)
-      'insert-after-end-of-line': => [new Motions.MoveToLastCharacterOfLine(@editor, @), new Operators.InsertAfter(@editor, @)]
-      'insert-at-beginning-of-line': => [new Motions.MoveToFirstCharacterOfLine(@editor, @), new Operators.Insert(@editor, @)]
-      'insert-above-with-newline': => new Operators.InsertAboveWithNewline(@editor, @)
-      'insert-below-with-newline': => new Operators.InsertBelowWithNewline(@editor, @)
+      'activate-insert-mode': => new Operators.Insert(@editor, this)
+      'activate-replace-mode': => new Operators.ReplaceMode(@editor, this)
+      'substitute': => new Operators.Substitute(@editor, this)
+      'substitute-line': => new Operators.SubstituteLine(@editor, this)
+      'insert-after': => new Operators.InsertAfter(@editor, this)
+      'insert-after-end-of-line': => new Operators.InsertAfterEndOfLine(@editor, this)
+      'insert-at-beginning-of-line': => new Operators.InsertAtBeginningOfLine(@editor, this)
+      'insert-above-with-newline': => new Operators.InsertAboveWithNewline(@editor, this)
+      'insert-below-with-newline': => new Operators.InsertBelowWithNewline(@editor, this)
       'delete': => @linewiseAliasedOperator(Operators.Delete)
       'change': => @linewiseAliasedOperator(Operators.Change)
-      'change-to-last-character-of-line': => [new Operators.Change(@editor, @), new Motions.MoveToLastCharacterOfLine(@editor, @)]
-      'delete-right': => [new Operators.Delete(@editor, @), new Motions.MoveRight(@editor, @)]
-      'delete-left': => [new Operators.Delete(@editor, @), new Motions.MoveLeft(@editor, @)]
-      'delete-to-last-character-of-line': => [new Operators.Delete(@editor, @), new Motions.MoveToLastCharacterOfLine(@editor, @)]
-      'toggle-case': => new Operators.ToggleCase(@editor, @)
+      'change-to-last-character-of-line': => [new Operators.Change(@editor, this), new Motions.MoveToLastCharacterOfLine(@editor, this)]
+      'delete-right': => [new Operators.Delete(@editor, this), new Motions.MoveRight(@editor, this)]
+      'delete-left': => [new Operators.Delete(@editor, this), new Motions.MoveLeft(@editor, this)]
+      'delete-to-last-character-of-line': => [new Operators.Delete(@editor, this), new Motions.MoveToLastCharacterOfLine(@editor, this)]
+      'toggle-case': => new Operators.ToggleCase(@editor, this)
+      'upper-case': => new Operators.UpperCase(@editor, this)
+      'lower-case': => new Operators.LowerCase(@editor, this)
+      'toggle-case-now': => new Operators.ToggleCase(@editor, this, complete: true)
       'yank': => @linewiseAliasedOperator(Operators.Yank)
-      'yank-line': => [new Operators.Yank(@editor, @), new Motions.MoveToRelativeLine(@editor, @)]
-      'put-before': => new Operators.Put(@editor, @, location: 'before')
-      'put-after': => new Operators.Put(@editor, @, location: 'after')
-      'join': => new Operators.Join(@editor, @)
+      'yank-line': => [new Operators.Yank(@editor, this), new Motions.MoveToRelativeLine(@editor, this)]
+      'put-before': => new Operators.Put(@editor, this, location: 'before')
+      'put-after': => new Operators.Put(@editor, this, location: 'after')
+      'join': => new Operators.Join(@editor, this)
       'indent': => @linewiseAliasedOperator(Operators.Indent)
       'outdent': => @linewiseAliasedOperator(Operators.Outdent)
       'auto-indent': => @linewiseAliasedOperator(Operators.Autoindent)
-      'move-left': => new Motions.MoveLeft(@editor, @)
-      'move-up': => new Motions.MoveUp(@editor, @)
-      'move-down': => new Motions.MoveDown(@editor, @)
-      'move-right': => new Motions.MoveRight(@editor, @)
-      'move-to-next-word': => new Motions.MoveToNextWord(@editor, @)
-      'move-to-next-whole-word': => new Motions.MoveToNextWholeWord(@editor, @)
-      'move-to-end-of-word': => new Motions.MoveToEndOfWord(@editor, @)
-      'move-to-end-of-whole-word': => new Motions.MoveToEndOfWholeWord(@editor, @)
-      'move-to-previous-word': => new Motions.MoveToPreviousWord(@editor, @)
-      'move-to-previous-whole-word': => new Motions.MoveToPreviousWholeWord(@editor, @)
-      'move-to-next-paragraph': => new Motions.MoveToNextParagraph(@editor, @)
-      'move-to-previous-paragraph': => new Motions.MoveToPreviousParagraph(@editor, @)
-      'move-to-first-character-of-line': => new Motions.MoveToFirstCharacterOfLine(@editor, @)
-      'move-to-last-character-of-line': => new Motions.MoveToLastCharacterOfLine(@editor, @)
+      'increase': => new Operators.Increase(@editor, this)
+      'decrease': => new Operators.Decrease(@editor, this)
+      'move-left': => new Motions.MoveLeft(@editor, this)
+      'move-up': => new Motions.MoveUp(@editor, this)
+      'move-down': => new Motions.MoveDown(@editor, this)
+      'move-right': => new Motions.MoveRight(@editor, this)
+      'move-to-next-word': => new Motions.MoveToNextWord(@editor, this)
+      'move-to-next-whole-word': => new Motions.MoveToNextWholeWord(@editor, this)
+      'move-to-end-of-word': => new Motions.MoveToEndOfWord(@editor, this)
+      'move-to-end-of-whole-word': => new Motions.MoveToEndOfWholeWord(@editor, this)
+      'move-to-previous-word': => new Motions.MoveToPreviousWord(@editor, this)
+      'move-to-previous-whole-word': => new Motions.MoveToPreviousWholeWord(@editor, this)
+      'move-to-next-paragraph': => new Motions.MoveToNextParagraph(@editor, this)
+      'move-to-previous-paragraph': => new Motions.MoveToPreviousParagraph(@editor, this)
+      'move-to-first-character-of-line': => new Motions.MoveToFirstCharacterOfLine(@editor, this)
+      'move-to-first-character-of-line-and-down': => new Motions.MoveToFirstCharacterOfLineAndDown(@editor, this)
+      'move-to-last-character-of-line': => new Motions.MoveToLastCharacterOfLine(@editor, this)
+      'move-to-last-nonblank-character-of-line-and-down': => new Motions.MoveToLastNonblankCharacterOfLineAndDown(@editor, this)
       'move-to-beginning-of-line': (e) => @moveOrRepeat(e)
-      'move-to-first-character-of-line-up': => new Motions.MoveToFirstCharacterOfLineUp(@editor, @)
-      'move-to-first-character-of-line-down': => new Motions.MoveToFirstCharacterOfLineDown(@editor, @)
-      'move-to-start-of-file': => new Motions.MoveToStartOfFile(@editor, @)
-      'move-to-line': => new Motions.MoveToLine(@editor, @)
-      'move-to-top-of-screen': => new Motions.MoveToTopOfScreen(@editor, @)
-      'move-to-bottom-of-screen': => new Motions.MoveToBottomOfScreen(@editor, @)
-      'move-to-middle-of-screen': => new Motions.MoveToMiddleOfScreen(@editor, @)
-      'scroll-down': => new Scroll.ScrollDown(@editor)
-      'scroll-up': => new Scroll.ScrollUp(@editor)
-      'scroll-cursor-to-top': => new Scroll.ScrollCursorToTop(@editor)
-      'scroll-cursor-to-top-leave': => new Scroll.ScrollCursorToTop(@editor, {leaveCursor: true})
-      'scroll-cursor-to-middle': => new Scroll.ScrollCursorToMiddle(@editor)
-      'scroll-cursor-to-middle-leave': => new Scroll.ScrollCursorToMiddle(@editor, {leaveCursor: true})
-      'scroll-cursor-to-bottom': => new Scroll.ScrollCursorToBottom(@editor)
-      'scroll-cursor-to-bottom-leave': => new Scroll.ScrollCursorToBottom(@editor, {leaveCursor: true})
-      'scroll-half-screen-up': => new Scroll.ScrollHalfScreenUp(@editor)
-      'scroll-half-screen-down': => new Scroll.ScrollHalfScreenDown(@editor)
+      'move-to-first-character-of-line-up': => new Motions.MoveToFirstCharacterOfLineUp(@editor, this)
+      'move-to-first-character-of-line-down': => new Motions.MoveToFirstCharacterOfLineDown(@editor, this)
+      'move-to-start-of-file': => new Motions.MoveToStartOfFile(@editor, this)
+      'move-to-line': => new Motions.MoveToAbsoluteLine(@editor, this)
+      'move-to-top-of-screen': => new Motions.MoveToTopOfScreen(@editorElement, this)
+      'move-to-bottom-of-screen': => new Motions.MoveToBottomOfScreen(@editorElement, this)
+      'move-to-middle-of-screen': => new Motions.MoveToMiddleOfScreen(@editorElement, this)
+      'scroll-down': => new Scroll.ScrollDown(@editorElement)
+      'scroll-up': => new Scroll.ScrollUp(@editorElement)
+      'scroll-cursor-to-top': => new Scroll.ScrollCursorToTop(@editorElement)
+      'scroll-cursor-to-top-leave': => new Scroll.ScrollCursorToTop(@editorElement, {leaveCursor: true})
+      'scroll-cursor-to-middle': => new Scroll.ScrollCursorToMiddle(@editorElement)
+      'scroll-cursor-to-middle-leave': => new Scroll.ScrollCursorToMiddle(@editorElement, {leaveCursor: true})
+      'scroll-cursor-to-bottom': => new Scroll.ScrollCursorToBottom(@editorElement)
+      'scroll-cursor-to-bottom-leave': => new Scroll.ScrollCursorToBottom(@editorElement, {leaveCursor: true})
+      'scroll-half-screen-up': => new Motions.ScrollHalfUpKeepCursor(@editorElement, this)
+      'scroll-full-screen-up': => new Motions.ScrollFullUpKeepCursor(@editorElement, this)
+      'scroll-half-screen-down': => new Motions.ScrollHalfDownKeepCursor(@editorElement, this)
+      'scroll-full-screen-down': => new Motions.ScrollFullDownKeepCursor(@editorElement, this)
+      'scroll-cursor-to-left': => new Scroll.ScrollCursorToLeft(@editorElement)
+      'scroll-cursor-to-right': => new Scroll.ScrollCursorToRight(@editorElement)
       'select-inside-word': => new TextObjects.SelectInsideWord(@editor)
+      'select-inside-whole-word': => new TextObjects.SelectInsideWholeWord(@editor)
       'select-inside-double-quotes': => new TextObjects.SelectInsideQuotes(@editor, '"', false)
       'select-inside-single-quotes': => new TextObjects.SelectInsideQuotes(@editor, '\'', false)
       'select-inside-back-ticks': => new TextObjects.SelectInsideQuotes(@editor, '`', false)
       'select-inside-curly-brackets': => new TextObjects.SelectInsideBrackets(@editor, '{', '}', false)
       'select-inside-angle-brackets': => new TextObjects.SelectInsideBrackets(@editor, '<', '>', false)
+      'select-inside-tags': => new TextObjects.SelectInsideBrackets(@editor, '>', '<', false)
       'select-inside-square-brackets': => new TextObjects.SelectInsideBrackets(@editor, '[', ']', false)
       'select-inside-parentheses': => new TextObjects.SelectInsideBrackets(@editor, '(', ')', false)
+      'select-inside-paragraph': => new TextObjects.SelectInsideParagraph(@editor, false)
       'select-a-word': => new TextObjects.SelectAWord(@editor)
+      'select-a-whole-word': => new TextObjects.SelectAWholeWord(@editor)
       'select-around-double-quotes': => new TextObjects.SelectInsideQuotes(@editor, '"', true)
       'select-around-single-quotes': => new TextObjects.SelectInsideQuotes(@editor, '\'', true)
       'select-around-back-ticks': => new TextObjects.SelectInsideQuotes(@editor, '`', true)
@@ -129,30 +162,26 @@ class VimState
       'select-around-angle-brackets': => new TextObjects.SelectInsideBrackets(@editor, '<', '>', true)
       'select-around-square-brackets': => new TextObjects.SelectInsideBrackets(@editor, '[', ']', true)
       'select-around-parentheses': => new TextObjects.SelectInsideBrackets(@editor, '(', ')', true)
+      'select-around-paragraph': => new TextObjects.SelectAParagraph(@editor, true)
       'register-prefix': (e) => @registerPrefix(e)
-      'repeat': (e) => new Operators.Repeat(@editor, @)
-      'repeat-search': (e) => currentSearch.repeat() if (currentSearch = Motions.Search.currentSearch)?
-      'repeat-search-backwards': (e) => currentSearch.repeat(backwards: true) if (currentSearch = Motions.Search.currentSearch)?
-      'focus-pane-view-on-left': => new Panes.FocusPaneViewOnLeft()
-      'focus-pane-view-on-right': => new Panes.FocusPaneViewOnRight()
-      'focus-pane-view-above': => new Panes.FocusPaneViewAbove()
-      'focus-pane-view-below': => new Panes.FocusPaneViewBelow()
-      'focus-previous-pane-view': => new Panes.FocusPreviousPaneView()
-      'move-to-mark': (e) => new Motions.MoveToMark(@editor, @)
-      'move-to-mark-literal': (e) => new Motions.MoveToMark(@editor, @, false)
-      'mark': (e) => new Operators.Mark(@editor, @)
-      'find': (e) => new Motions.Find(@editor, @)
-      'find-backwards': (e) => new Motions.Find(@editor, @).reverse()
-      'till': (e) => new Motions.Till(@editor, @)
-      'till-backwards': (e) => new Motions.Till(@editor, @).reverse()
+      'repeat': (e) => new Operators.Repeat(@editor, this)
+      'repeat-search': (e) => new Motions.RepeatSearch(@editor, this)
+      'repeat-search-backwards': (e) => new Motions.RepeatSearch(@editor, this).reversed()
+      'move-to-mark': (e) => new Motions.MoveToMark(@editor, this)
+      'move-to-mark-literal': (e) => new Motions.MoveToMark(@editor, this, false)
+      'mark': (e) => new Operators.Mark(@editor, this)
+      'find': (e) => new Motions.Find(@editor, this)
+      'find-backwards': (e) => new Motions.Find(@editor, this).reverse()
+      'till': (e) => new Motions.Till(@editor, this)
+      'till-backwards': (e) => new Motions.Till(@editor, this).reverse()
       'repeat-find': (e) => @currentFind.repeat() if @currentFind?
       'repeat-find-reverse': (e) => @currentFind.repeat(reverse: true) if @currentFind?
-      'replace': (e) => new Operators.Replace(@editor, @)
-      'search': (e) => new Motions.Search(@editor, @)
-      'reverse-search': (e) => (new Motions.Search(@editor, @)).reversed()
-      'search-current-word': (e) => new Motions.SearchCurrentWord(@editor, @)
-      'bracket-matching-motion': (e) => new Motions.BracketMatchingMotion(@editor,@)
-      'reverse-search-current-word': (e) => (new Motions.SearchCurrentWord(@editor, @)).reversed()
+      'replace': (e) => new Operators.Replace(@editor, this)
+      'search': (e) => new Motions.Search(@editor, this)
+      'reverse-search': (e) => (new Motions.Search(@editor, this)).reversed()
+      'search-current-word': (e) => new Motions.SearchCurrentWord(@editor, this)
+      'bracket-matching-motion': (e) => new Motions.BracketMatchingMotion(@editor, this)
+      'reverse-search-current-word': (e) => (new Motions.SearchCurrentWord(@editor, this)).reversed()
 
   # Private: Register multiple command handlers via an {Object} that maps
   # command names to command handler functions.
@@ -190,8 +219,8 @@ class VimState
       # if we have started an operation that responds to canComposeWith check if it can compose
       # with the operation we're going to push onto the stack
       if (topOp = @topOperation())? and topOp.canComposeWith? and not topOp.canComposeWith(operation)
+        @resetNormalMode()
         @emitter.emit('failed-to-compose')
-        @resetCommandMode()
         break
 
       @opStack.push(operation)
@@ -199,18 +228,25 @@ class VimState
       # If we've received an operator in visual mode, mark the current
       # selection as the motion to operate on.
       if @mode is 'visual' and operation instanceof Operators.Operator
-        @opStack.push(new Motions.CurrentSelection(@editor, @))
+        @opStack.push(new Motions.CurrentSelection(@editor, this))
 
       @processOpStack()
 
   onDidFailToCompose: (fn) ->
     @emitter.on('failed-to-compose', fn)
 
+  onDidDestroy: (fn) ->
+    @emitter.on('did-destroy', fn)
+
   # Private: Removes all operations from the stack.
   #
   # Returns nothing.
   clearOpStack: ->
     @opStack = []
+
+  undo: ->
+    @editor.undo()
+    @activateNormalMode()
 
   # Private: Processes the command if the last operation is complete.
   #
@@ -220,7 +256,7 @@ class VimState
       return
 
     unless @topOperation().isComplete()
-      if @mode is 'command' and @topOperation() instanceof Operators.Operator
+      if @mode is 'normal' and @topOperation() instanceof Operators.Operator
         @activateOperatorPendingMode()
       return
 
@@ -231,7 +267,7 @@ class VimState
         @processOpStack()
       catch e
         if (e instanceof Operators.OperatorError) or (e instanceof Motions.MotionError)
-          @resetCommandMode()
+          @resetNormalMode()
         else
           throw e
     else
@@ -251,20 +287,22 @@ class VimState
   # Returns the value of the given register or undefined if it hasn't
   # been set.
   getRegister: (name) ->
+    if name is '"'
+      name = settings.defaultRegister()
     if name in ['*', '+']
       text = atom.clipboard.read()
       type = Utils.copyType(text)
       {text, type}
-    else if name == '%'
-      text = @editor.getUri()
+    else if name is '%'
+      text = @editor.getURI()
       type = Utils.copyType(text)
       {text, type}
-    else if name == "_" # Blackhole always returns nothing
+    else if name is "_" # Blackhole always returns nothing
       text = ''
       type = Utils.copyType(text)
       {text, type}
     else
-      @globalVimState.registers[name]
+      @globalVimState.registers[name.toLowerCase()]
 
   # Private: Fetches the value of a given mark.
   #
@@ -278,7 +316,6 @@ class VimState
     else
       undefined
 
-
   # Private: Sets the value of a given register.
   #
   # name  - The name of the register to fetch.
@@ -286,12 +323,31 @@ class VimState
   #
   # Returns nothing.
   setRegister: (name, value) ->
+    if name is '"'
+      name = settings.defaultRegister()
     if name in ['*', '+']
       atom.clipboard.write(value.text)
-    else if name == '_'
+    else if name is '_'
       # Blackhole register, nothing to do
+    else if /^[A-Z]$/.test(name)
+      @appendRegister(name.toLowerCase(), value)
     else
       @globalVimState.registers[name] = value
+
+
+  # Private: append a value into a given register
+  # like setRegister, but appends the value
+  appendRegister: (name, value) ->
+    register = @globalVimState.registers[name] ?=
+      type: 'character'
+      text: ""
+    if register.type is 'linewise' and value.type isnt 'linewise'
+      register.text += value.text + '\n'
+    else if register.type isnt 'linewise' and value.type is 'linewise'
+      register.text += '\n' + value.text
+      register.type = 'linewise'
+    else
+      register.text += value.text
 
   # Private: Sets the value of a given mark.
   #
@@ -302,7 +358,7 @@ class VimState
   setMark: (name, pos) ->
     # check to make sure name is in [a-z] or is `
     if (charCode = name.charCodeAt(0)) >= 96 and charCode <= 122
-      marker = @editor.markBufferRange(new Range(pos,pos),{invalidate:'never',persistent:false})
+      marker = @editor.markBufferRange(new Range(pos, pos), {invalidate: 'never', persistent: false})
       @marks[name] = marker
 
   # Public: Append a search to the search history.
@@ -318,55 +374,103 @@ class VimState
   # index - the index of the search history item
   #
   # Returns a search motion
-  getSearchHistoryItem: (index) ->
+  getSearchHistoryItem: (index = 0) ->
     @globalVimState.searchHistory[index]
 
   ##############################################################################
   # Mode Switching
   ##############################################################################
 
-  # Private: Used to enable command mode.
+  # Private: Used to enable normal mode.
   #
   # Returns nothing.
-  activateCommandMode: ->
+  activateNormalMode: ->
     @deactivateInsertMode()
-    @mode = 'command'
+    @deactivateVisualMode()
+
+    @mode = 'normal'
     @submode = null
 
-    if @editorElement.classList.contains("insert-mode")
-      cursor = @editor.getLastCursor()
-      cursor.moveLeft() unless cursor.isAtBeginningOfLine()
-
-    @changeModeClass('command-mode')
+    @changeModeClass('normal-mode')
 
     @clearOpStack()
-    @editor.clearSelections()
+    selection.clear(autoscroll: false) for selection in @editor.getSelections()
+    for cursor in @editor.getCursors()
+      if cursor.isAtEndOfLine() and not cursor.isAtBeginningOfLine()
+        cursor.moveLeft()
 
     @updateStatusBar()
+
+  # TODO: remove this method and bump the `vim-mode` service version number.
+  activateCommandMode: ->
+    Grim.deprecate("Use ::activateNormalMode instead")
+    @activateNormalMode()
 
   # Private: Used to enable insert mode.
   #
   # Returns nothing.
-  activateInsertMode: ->
+  activateInsertMode: (subtype = null) ->
     @mode = 'insert'
     @editorElement.component.setInputEnabled(true)
     @setInsertionCheckpoint()
-    @submode = null
+    @submode = subtype
     @changeModeClass('insert-mode')
     @updateStatusBar()
+
+  activateReplaceMode: ->
+    @activateInsertMode('replace')
+    @replaceModeCheckpoint = null
+    @replaceModeCounter = 0
+    @editorElement.classList.add('replace-mode')
+    @subscriptions.add @replaceModeListener = @editor.onWillInsertText @replaceModeInsertHandler
+    @subscriptions.add @replaceModeUndoListener = @editor.onDidInsertText @replaceModeUndoHandler
+
+  replaceModeInsertHandler: (event) =>
+    chars = event.text?.split('') or []
+    selections = @editor.getSelections()
+    @replaceModeCheckpoint = @editor.createCheckpoint()
+    for char in chars
+      continue if char is '\n'
+      for selection in selections
+        # Delete next character
+        selection.delete() unless selection.cursor.isAtEndOfLine()
+
+  replaceModeUndoHandler: (event) =>
+    @editor.groupChangesSinceCheckpoint(@replaceModeCheckpoint) if @replaceModeCheckpoint?
+    @replaceModeCounter++
+
+  replaceModeUndo: ->
+    if @replaceModeCounter > 0
+      @editor.undo()
+      @replaceModeCounter--
 
   setInsertionCheckpoint: ->
     @insertionCheckpoint = @editor.createCheckpoint() unless @insertionCheckpoint?
 
   deactivateInsertMode: ->
+    return unless @mode in [null, 'insert']
     @editorElement.component.setInputEnabled(false)
-    return unless @mode == 'insert'
+    @editorElement.classList.remove('replace-mode')
     @editor.groupChangesSinceCheckpoint(@insertionCheckpoint)
-    @insertionCheckpoint = null
-    transaction = _.last(@editor.buffer.history.undoStack)
+    changes = getChangesSinceCheckpoint(@editor.buffer, @insertionCheckpoint)
     item = @inputOperator(@history[0])
-    if item? and transaction?
-      item.confirmTransaction(transaction)
+    @insertionCheckpoint = null
+    if item?
+      item.confirmChanges(changes)
+    for cursor in @editor.getCursors()
+      cursor.moveLeft() unless cursor.isAtBeginningOfLine()
+    if @replaceModeListener?
+      @replaceModeListener.dispose()
+      @subscriptions.remove @replaceModeListener
+      @replaceModeListener = null
+      @replaceModeUndoListener.dispose()
+      @subscriptions.remove @replaceModeUndoListener
+      @replaceModeUndoListener = null
+
+  deactivateVisualMode: ->
+    return unless @mode is 'visual'
+    for selection in @editor.getSelections()
+      selection.cursor.moveLeft() unless (selection.isEmpty() or selection.isReversed())
 
   # Private: Get the input operator that needs to be told about about the
   # typed undo transaction in a recently completed operation, if there
@@ -376,23 +480,60 @@ class VimState
     return item if item.inputOperator?()
     return item.composedObject if item.composedObject?.inputOperator?()
 
-
   # Private: Used to enable visual mode.
   #
   # type - One of 'characterwise', 'linewise' or 'blockwise'
   #
   # Returns nothing.
   activateVisualMode: (type) ->
-    @deactivateInsertMode()
-    @mode = 'visual'
-    @submode = type
-    @changeModeClass('visual-mode')
+    # Already in 'visual', this means one of following command is
+    # executed within `vim-mode.visual-mode`
+    #  * activate-blockwise-visual-mode
+    #  * activate-characterwise-visual-mode
+    #  * activate-linewise-visual-mode
+    if @mode is 'visual'
+      if @submode is type
+        @activateNormalMode()
+        return
 
-    if @submode == 'linewise'
-      @editor.selectLinesContainingCursors()
-      @initialSelectedRange = @editor.getLastSelection().getBufferRange()
+      @submode = type
+      if @submode is 'linewise'
+        for selection in @editor.getSelections()
+          # Keep original range as marker's property to get back
+          # to characterwise.
+          # Since selectLine lost original cursor column.
+          originalRange = selection.getBufferRange()
+          selection.marker.setProperties({originalRange})
+          [start, end] = selection.getBufferRowRange()
+          selection.selectLine(row) for row in [start..end]
+
+      else if @submode in ['characterwise', 'blockwise']
+        # Currently, 'blockwise' is not yet implemented.
+        # So treat it as characterwise.
+        # Recover original range.
+        for selection in @editor.getSelections()
+          {originalRange} = selection.marker.getProperties()
+          if originalRange
+            [startRow, endRow] = selection.getBufferRowRange()
+            originalRange.start.row = startRow
+            originalRange.end.row   = endRow
+            selection.setBufferRange(originalRange)
+    else
+      @deactivateInsertMode()
+      @mode = 'visual'
+      @submode = type
+      @changeModeClass('visual-mode')
+
+      if @submode is 'linewise'
+        @editor.selectLinesContainingCursors()
+      else if @editor.getSelectedText() is ''
+        @editor.selectRight()
 
     @updateStatusBar()
+
+  # Private: Used to re-enable visual mode
+  resetVisualMode: ->
+    @activateVisualMode(@submode)
 
   # Private: Used to enable operator-pending mode.
   activateOperatorPendingMode: ->
@@ -404,18 +545,19 @@ class VimState
     @updateStatusBar()
 
   changeModeClass: (targetMode) ->
-    for mode in ['command-mode', 'insert-mode', 'visual-mode', 'operator-pending-mode']
+    for mode in ['normal-mode', 'insert-mode', 'visual-mode', 'operator-pending-mode']
       if mode is targetMode
         @editorElement.classList.add(mode)
       else
         @editorElement.classList.remove(mode)
 
-  # Private: Resets the command mode back to it's initial state.
+  # Private: Resets the normal mode back to it's initial state.
   #
   # Returns nothing.
-  resetCommandMode: ->
+  resetNormalMode: ->
     @clearOpStack()
-    @activateCommandMode()
+    @editor.clearSelections()
+    @activateNormalMode()
 
   # Private: A generic way to create a Register prefix based on the event.
   #
@@ -423,9 +565,19 @@ class VimState
   #
   # Returns nothing.
   registerPrefix: (e) ->
+    new Prefixes.Register(@registerName(e))
+
+  # Private: Gets a register name from a keyboard event
+  #
+  # e - The event
+  #
+  # Returns the name of the register
+  registerName: (e) ->
     keyboardEvent = e.originalEvent?.originalEvent ? e.originalEvent
-    name = atom.keymap.keystrokeForKeyboardEvent(keyboardEvent)
-    new Prefixes.Register(name)
+    name = atom.keymaps.keystrokeForKeyboardEvent(keyboardEvent)
+    if name.lastIndexOf('shift-', 0) is 0
+      name = name.slice(6)
+    name
 
   # Private: A generic way to create a Number prefix based on the event.
   #
@@ -434,7 +586,7 @@ class VimState
   # Returns nothing.
   repeatPrefix: (e) ->
     keyboardEvent = e.originalEvent?.originalEvent ? e.originalEvent
-    num = parseInt(atom.keymap.keystrokeForKeyboardEvent(keyboardEvent))
+    num = parseInt(atom.keymaps.keystrokeForKeyboardEvent(keyboardEvent))
     if @topOperation() instanceof Prefixes.Repeat
       @topOperation().addDigit(num)
     else
@@ -442,6 +594,11 @@ class VimState
         e.abortKeyBinding()
       else
         @pushOperations(new Prefixes.Repeat(num))
+
+  reverseSelections: ->
+    for selection in @editor.getSelections()
+      reversed = not selection.isReversed()
+      selection.setBufferRange(selection.getBufferRange(), {reversed})
 
   # Private: Figure out whether or not we are in a repeat sequence or we just
   # want to move to the beginning of the line. If we are within a repeat
@@ -455,7 +612,7 @@ class VimState
       @repeatPrefix(e)
       null
     else
-      new Motions.MoveToBeginningOfLine(@editor, @)
+      new Motions.MoveToBeginningOfLine(@editor, this)
 
   # Private: A generic way to handle Operators that can be repeated for
   # their linewise form.
@@ -465,9 +622,9 @@ class VimState
   # Returns nothing.
   linewiseAliasedOperator: (constructor) ->
     if @isOperatorPending(constructor)
-      new Motions.MoveToRelativeLine(@editor, @)
+      new Motions.MoveToRelativeLine(@editor, this)
     else
-      new constructor(@editor, @)
+      new constructor(@editor, this)
 
   # Private: Check if there is a pending operation of a certain type, or
   # if there is any pending operation, if no type given.
@@ -483,4 +640,23 @@ class VimState
       @opStack.length > 0
 
   updateStatusBar: ->
-    @statusBarManager.update(@mode)
+    @statusBarManager.update(@mode, @submode)
+
+  # Private: insert the contents of the register in the editor
+  #
+  # name - the name of the register to insert
+  #
+  # Returns nothing.
+  insertRegister: (name) ->
+    text = @getRegister(name)?.text
+    @editor.insertText(text) if text?
+
+# This uses private APIs and may break if TextBuffer is refactored.
+# Package authors - copy and paste this code at your own risk.
+getChangesSinceCheckpoint = (buffer, checkpoint) ->
+  {history} = buffer
+
+  if (index = history.getCheckpointIndex(checkpoint))?
+    history.undoStack.slice(index)
+  else
+    []

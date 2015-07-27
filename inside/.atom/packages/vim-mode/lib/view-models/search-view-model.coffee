@@ -1,4 +1,3 @@
-_ = require 'underscore-plus'
 {ViewModel} = require './view-model'
 
 module.exports =
@@ -7,11 +6,11 @@ class SearchViewModel extends ViewModel
     super(@searchMotion, class: 'search')
     @historyIndex = -1
 
-    @view.editor.on('core:move-up', @increaseHistorySearch)
-    @view.editor.on('core:move-down', @decreaseHistorySearch)
+    atom.commands.add(@view.editorElement, 'core:move-up', @increaseHistorySearch)
+    atom.commands.add(@view.editorElement, 'core:move-down', @decreaseHistorySearch)
 
   restoreHistory: (index) ->
-    @view.editor.setText(@history(index).value)
+    @view.editorElement.getModel().setText(@history(index))
 
   history: (index) ->
     @vimState.getSearchHistoryItem(index)
@@ -25,11 +24,19 @@ class SearchViewModel extends ViewModel
     if @historyIndex <= 0
       # get us back to a clean slate
       @historyIndex = -1
-      @view.editor.setText('')
+      @view.editorElement.getModel().setText('')
     else
       @historyIndex -= 1
       @restoreHistory(@historyIndex)
 
   confirm: (view) =>
-    @vimState.pushSearchHistory(@)
+    repeatChar = if @searchMotion.initiallyReversed then '?' else '/'
+    if @view.value is '' or @view.value is repeatChar
+      lastSearch = @history(0)
+      if lastSearch?
+        @view.value = lastSearch
+      else
+        @view.value = ''
+        atom.beep()
     super(view)
+    @vimState.pushSearchHistory(@view.value)

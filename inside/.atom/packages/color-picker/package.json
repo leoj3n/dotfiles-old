@@ -1,27 +1,57 @@
 {
   "name": "color-picker",
   "main": "./lib/ColorPicker",
-  "version": "0.14.3",
+  "version": "2.0.11",
   "private": true,
-  "description": "A Color Picker for the Atom Editor. Right click a color and select color picker to open it.",
+  "description": "Right click or press CMD-SHIFT-C/CTRL-ALT-C to open it.",
   "repository": {
     "type": "git",
     "url": "https://github.com/thomaslindstrom/color-picker"
   },
+  "keywords": [
+    "colors",
+    "design",
+    "ui"
+  ],
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">=1.0.2"
   },
-  "readme": "# A Color Picker for Atom\n\nA color picker for Atom. Either right click a color and select `Color picker`, or place the cursor on a color and hit `CMD-SHIFT-C`. Currently reads HEX, HEXA, RGB, RGBA, HSL and HSLA.\n\nInspects Sass/LESS variables! [Take a look here.](http://t.hom.as/colorpicker4.mov)\n\n**NEW:** Now also reads HSL and HSLA!\n\n## Preview\n\n![Color Picker in action](http://f.cl.ly/items/3g3T401o0o0F2m2O1z1K/output.gif)\n\n## To do\n\n- Code cleanup\n- Preview color manipulation functions (lighten, darken)\n- Convertions\n- Stylus variable lookup\n- Edit the color value\n- Tests\n",
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/thomaslindstrom/color-picker/issues"
   },
   "homepage": "https://github.com/thomaslindstrom/color-picker",
-  "_id": "color-picker@0.14.3",
-  "dist": {
-    "shasum": "8bede337518cb080b187b278ace6468e8800f9e7"
-  },
-  "_resolved": "/var/folders/bj/p3pj7w7d53b_b74d30q_818m0000gp/T/d-114313-10813-1bo8akk/package.tgz",
-  "_from": "/var/folders/bj/p3pj7w7d53b_b74d30q_818m0000gp/T/d-114313-10813-1bo8akk/package.tgz"
+  "readme": "# A Color Picker for Atom\n\nRight click and select `Color Picker`, or hit `CMD-SHIFT-C`/`CTRL-ALT-C` to open it. Currently reads `HEX`, `HEXa`, `RGB`, `RGBa`, `HSL`, `HSLa`, `HSV`, `HSVa`, `VEC3` and `VEC4` colors – and is able to convert between the formats.\n\nIt also inspects `Sass` and `LESS` color variables. Just open the `Color Picker` with the cursor at a variable and it'll look up the definition for you. From there, you can click the definition and go directly to where it's defined.\n\n## Preview\n\n![Color Picker in action](https://github.com/thomaslindstrom/color-picker/raw/master/preview.gif)\n\n## Settings\n\nOpen `Atom Settings`, go to `Packages` in the left hand sidebar, and press `Settings` on `color-picker` to open the list of settings available for the Color Picker.\n\n- **Abbreviate Color Values:** If possible, abbreviate color values, like for example “0.3” to “.3” and “#ffffff” to “#fff”.\n- **Automatically Replace Color:** Replace selected color automatically on change. Works well with as-you-type CSS reloaders.\n- **Preferred Color Format:** On open, the Color Picker will show a color in this format.\n- **Serve a random color on open:** If the Color Picker doesn't get an input color, it serves a completely random color.\n- **Trigger key:** Decide what trigger key should open the Color Picker. `CMD-SHIFT-{TRIGGER_KEY}` and `CTRL-ALT-{TRIGGER_KEY}`. Requires a restart.\n- **Uppercase Color Values:** If sensible, uppercase the color value. For example, “#aaa” becomes “#AAA”.\n\n## To do\n\n- Selectable list of the current project color variables\n",
+  "_id": "color-picker@2.0.11",
+  "_shasum": "f555302a384698b28c91063ede38396fb73e5a6c",
+  "_resolved": "file:../d-115626-22768-1gu6dwb/package.tgz",
+  "_from": "../d-115626-22768-1gu6dwb/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".coffee": [
+        "lib/ColorPicker-view.coffee",
+        "lib/ColorPicker.coffee",
+        "lib/extensions/Alpha.coffee",
+        "lib/extensions/Arrow.coffee",
+        "lib/extensions/Body.coffee",
+        "lib/extensions/Color.coffee",
+        "lib/extensions/Definition.coffee",
+        "lib/extensions/Format.coffee",
+        "lib/extensions/Hue.coffee",
+        "lib/extensions/Return.coffee",
+        "lib/extensions/Saturation.coffee",
+        "lib/modules/Convert.coffee",
+        "lib/modules/Emitter.coffee",
+        "lib/modules/SmartColor.coffee",
+        "lib/modules/SmartVariable.coffee"
+      ],
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
 }

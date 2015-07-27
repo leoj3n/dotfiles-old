@@ -1,5 +1,174 @@
 ## HEAD
 
+## 0.57
+
+* Added replace ('R') mode! - @jacekkopecky
+* Added the `iW` and `aW` text objects! - @jacekkopecky
+* Made the 't' operator behave correctly when the cursor was already on the  
+  searched  character - @jacekkopecky
+* Fixed the position of the cursor after pasting with 'p' - @jacekkopecky
+
+## 0.56
+
+* Renamed 'command mode' to 'normal mode' - @coolwanglu
+
+## 0.55
+
+* Fixed indentation commands so that they exit visual mode - @bronson
+* Implemented horizontal scrolling commands `z s` and `z e` - @jacekkopecky
+
+## 0.54
+
+* Fixed an error where repeating an insertion command would not handle
+  characters inserted by packages like autocomplete or bracket-matcher - @jacekkopecky
+
+## 0.53
+
+* Fixed an exception that would occur when using `.` to repeat in certain cases.
+
+## 0.52
+
+* Fixed incorrect cursor motion when exiting visual mode w/ a reversed
+  selection - @t9md
+* Added setting to configure the regexp used for numbers and the `ctrl-a`
+  and `ctrl-x` keybindings - @jacekkopecky
+
+## 0.50
+
+* Fixed cursor position after `dd` command - @bronson
+* Implement `ap` text-object differently than `ip` - MarkusSN
+
+## 0.49
+
+* Fixed an issue that caused the cursor to move left incorrectly when near
+  the end of a line.
+
+## 0.48
+
+* Fixed usages of deprecated APIs
+
+## 0.47
+
+* Fixed usages of deprecated APIs - @hitsmaxft, @jacekkopecky
+
+## 0.46
+
+* Fixed issues with deleting when there are multiple selections - @jacekkopecky
+* Added paragraph text-objects 'ip' and 'ap' - @t9md
+* Fixed use of a deprecated method - @akonwi
+
+## 0.45
+
+* Added `ctrl-x` and `ctrl-a` for incrementing and decrementing numbers - @jacekkopecky
+* Fixed the behavior of scrolling motions in visual mode - @daniloisr
+
+## 0.44
+
+* Fixed issue where canceling the replace operator would delete text - @jacekkopecky
+* Implemented repeat search commands: '//', '??', etc - @jacekkopecky
+* Fixed issue where registers' contents were overwritten with the empty string - @jacekkopecky
+
+## 0.43
+
+* Made '%', '\*' and '\#' interact properly with search history @jacekkopecky
+
+## 0.42
+
+* Fixed spurious command bindings on command mode input element - @andischerer
+
+## 0.41
+
+* Added ability to append to register - @jacekkopecky
+* Fixed an issue where deactivation would sometimes fail
+
+## 0.40
+
+* Fixed an issue where the search input text was not visible - @tmm1
+* Added a different status-bar entry for visual-line mode - @jacekkopecky
+
+## 0.39
+
+* Made repeating insertions work more correctly with multiple cursors
+* Fixed bugs in `*` and `#` with cursor between words - @jacekkopecky
+
+## 0.38
+
+* Implemented change case operators: `gU`, `gu` and `g~` - @jacekkopecky
+* Fixed behavior of repeating `I` and `A` insertions - @jacekkopecky
+
+## 0.36
+
+* Fixed an issue where `d` and `c` with forward motions would sometimes
+  incorrectly delete the character before the cursor - @deiwin
+
+## 0.35
+
+* Implemented basic version of `i t` operator - @neiled
+* Made `t` motion repeatable with `;` - @jacekkopecky
+
+## 0.34
+
+* Added a service API so that other packages can extend vim-mode - @lloeki
+* Added an insert-mode mapping for ctrl-u - @nicolaiskogheim
+
+## 0.33
+
+* Added a setting for using the system clipboard as the default register - @chrisfarms
+
+## 0.32
+
+* Added setting for allowing traversal of line breaks via `h` and `l` - @jacekkopecky
+* Fixed handling of whitespace characters in `B` mapping - @jacekkopecky
+* Fixed bugs when using counts with `f`, `F`, `t` and `T` mappings - @jacekkopecky
+
+## 0.31
+
+* Added '_' binding - @ftwillms
+* Fixed an issue where the '>', '<', and '=' operators
+  would move the cursor incorrectly.
+
+## 0.30
+
+* Make toggle-case operator work with multiple cursors
+
+## 0.29
+
+* Fix regression where '%' stopped working across multiple lines
+
+## 0.28
+
+* Fix some deprecation warnings
+
+## 0.27
+
+* Enter visual mode when selecting text in command mode
+* Don't select text after undo
+* Always preserve selection of the intially-selected character in visual mode
+* Fix bugs in the '%' motion
+* Fix bugs in the 'S' operator
+
+## 0.26
+
+* Add o mapping in visual mode, for reversing selections
+* Implement toggle-case in visual mode
+* Fix bug in 'around word' text object
+
+## 0.25
+
+* Fixed a regression in the handling of the 'cw' command
+* Made the replace operator work with multiple cursors
+
+## 0.24
+
+* Fixed the position of the cursor after certain yank operations.
+* Fixed an issue where duplicate vim states were created when an editors were
+  moved to different panes.
+
+## 0.23
+
+* Made motions, operators and text-objects work properly in the
+  presence of multiple cursors.
+
 ## 0.22
 
 * Fixed a stylesheet issue that caused visual glitches when vim-mode

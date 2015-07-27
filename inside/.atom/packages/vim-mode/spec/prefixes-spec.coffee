@@ -11,8 +11,8 @@ describe "Prefixes", ->
       editorElement = element
       editor = editorElement.getModel()
       vimState = editorElement.vimState
-      vimState.activateCommandMode()
-      vimState.resetCommandMode()
+      vimState.activateNormalMode()
+      vimState.resetNormalMode()
 
   keydown = (key, options={}) ->
     options.element ?= editorElement
@@ -59,7 +59,7 @@ describe "Prefixes", ->
         keydown("2")
         keydown("w")
 
-        expect(editor.getCursorScreenPosition()).toEqual [0, 8]
+        expect(editor.getCursorScreenPosition()).toEqual [0, 9]
 
   describe "Register", ->
     describe "the a register", ->
@@ -71,6 +71,27 @@ describe "Prefixes", ->
         vimState.setRegister('a', text: 'content')
         vimState.setRegister('a', text: 'new content')
         expect(vimState.getRegister("a").text).toEqual 'new content'
+
+    describe "the B register", ->
+      it "saves a value for future reading", ->
+        vimState.setRegister('B', text: 'new content')
+        expect(vimState.getRegister("b").text).toEqual 'new content'
+        expect(vimState.getRegister("B").text).toEqual 'new content'
+
+      it "appends to a value previously in the register", ->
+        vimState.setRegister('b', text: 'content')
+        vimState.setRegister('B', text: 'new content')
+        expect(vimState.getRegister("b").text).toEqual 'contentnew content'
+
+      it "appends linewise to a linewise value previously in the register", ->
+        vimState.setRegister('b', {type: 'linewise', text: 'content\n'})
+        vimState.setRegister('B', text: 'new content')
+        expect(vimState.getRegister("b").text).toEqual 'content\nnew content\n'
+
+      it "appends linewise to a character value previously in the register", ->
+        vimState.setRegister('b', text: 'content')
+        vimState.setRegister('B', {type: 'linewise', text: 'new content\n'})
+        expect(vimState.getRegister("b").text).toEqual 'content\nnew content\n'
 
 
     describe "the * register", ->
@@ -115,7 +136,7 @@ describe "Prefixes", ->
 
     describe "the % register", ->
       beforeEach ->
-        spyOn(editor, 'getUri').andReturn('/Users/atom/known_value.txt')
+        spyOn(editor, 'getURI').andReturn('/Users/atom/known_value.txt')
 
       describe "reading", ->
         it "returns the filename of the current editor", ->
@@ -125,3 +146,30 @@ describe "Prefixes", ->
         it "throws away anything written to it", ->
           vimState.setRegister('%', "new content")
           expect(vimState.getRegister('%').text).toEqual '/Users/atom/known_value.txt'
+
+    describe "the ctrl-r command in insert mode", ->
+      beforeEach ->
+        editor.setText "02\n"
+        editor.setCursorScreenPosition [0, 0]
+        vimState.setRegister('"', text: '345')
+        vimState.setRegister('a', text: 'abc')
+        atom.clipboard.write "clip"
+        keydown 'a'
+        editor.insertText '1'
+
+      it "inserts contents of the unnamed register with \"", ->
+        keydown 'r', ctrl: true
+        keydown '"'
+        expect(editor.getText()).toBe '013452\n'
+
+      describe "when useClipboardAsDefaultRegister enabled", ->
+        it "inserts contents from clipboard with \"", ->
+          atom.config.set 'vim-mode.useClipboardAsDefaultRegister', true
+          keydown 'r', ctrl: true
+          keydown '"'
+          expect(editor.getText()).toBe '01clip2\n'
+
+      it "inserts contents of the 'a' register", ->
+        keydown 'r', ctrl: true
+        keydown 'a'
+        expect(editor.getText()).toBe '01abc2\n'

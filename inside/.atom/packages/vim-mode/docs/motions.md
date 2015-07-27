@@ -17,6 +17,7 @@
 * [0](http://vimhelp.appspot.com/motion.txt.html#0)
 * [-](http://vimhelp.appspot.com/motion.txt.html#-)
 * [+](http://vimhelp.appspot.com/motion.txt.html#+)
+* [_](http://vimhelp.appspot.com/motion.txt.html#_)
 * [&lt;enter&gt;](http://vimhelp.appspot.com/motion.txt.html#<CR>)
 * [gg](http://vimhelp.appspot.com/motion.txt.html#gg)
 * [G](http://vimhelp.appspot.com/motion.txt.html#G)
@@ -33,3 +34,26 @@
 * [T](http://vimhelp.appspot.com/motion.txt.html#T)
 * [;](http://vimhelp.appspot.com/motion.txt.html#%3B)
 * [,](http://vimhelp.appspot.com/motion.txt.html#%2C)
+* [/ and ?](http://vimhelp.appspot.com/pattern.txt.html#search-commands) (including `//` and `??`)
+
+## Implemented Text Objects
+
+[Vim text objects](http://vimhelp.appspot.com/motion.txt.html#object-select)
+
+* ``a "``   ``i "``
+* ``a '``   ``i '``
+* ``a ```   ``i ```
+* ``a (``   ``i (``
+* ``a )``   ``i )``
+* ``a <``   ``i <``
+* ``a >``   ``i >``
+* ``a [``   ``i [``
+* ``a ]``   ``i ]``
+* ``a {``   ``i {``
+* ``a }``   ``i }``
+* ``a b``   ``i b``
+* ``a B``   ``i B``
+* ``a p``   ``i p``
+* ``a w``   ``i w``
+* ``a W``   ``i W``
+* ``i t``

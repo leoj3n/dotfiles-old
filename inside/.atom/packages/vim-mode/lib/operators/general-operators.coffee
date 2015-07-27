@@ -2,6 +2,7 @@ _ = require 'underscore-plus'
 {Point, Range} = require 'atom'
 {ViewModel} = require '../view-models/view-model'
 Utils = require '../utils'
+settings = require '../settings'
 
 class OperatorError
   constructor: (@message) ->
@@ -11,11 +12,8 @@ class Operator
   vimState: null
   motion: null
   complete: null
-  selectOptions: null
 
-  # selectOptions - The options object to pass through to the motion when
-  #                 selecting.
-  constructor: (@editor, @vimState, {@selectOptions}={}) ->
+  constructor: (@editor, @vimState) ->
     @complete = false
 
   # Public: Determines when the command can be executed.
@@ -38,22 +36,10 @@ class Operator
     if not motion.select
       throw new OperatorError('Must compose with a motion')
 
-    # Take on the composed object's isLinewise function if this object
-    # doesn't have one.
-    motion.isLinewise ?= motion.composedObject?.isLinewise
-
     @motion = motion
     @complete = true
 
   canComposeWith: (operation) -> operation.select?
-
-  # Protected: Wraps the function within an single undo step.
-  #
-  # fn - The function to wrap.
-  #
-  # Returns nothing.
-  undoTransaction: (fn) ->
-    @editor.getBuffer().transact(fn)
 
   # Public: Preps text and sets the text register
   #
@@ -65,7 +51,7 @@ class Operator
         text += '\n'
     else
       type = Utils.copyType(text)
-    @vimState.setRegister(register, {text, type})
+    @vimState.setRegister(register, {text, type}) unless text is ''
 
 # Public: Generic class for an operator that requires extra input
 class OperatorWithInput extends Operator
@@ -86,15 +72,11 @@ class OperatorWithInput extends Operator
 # It deletes everything selected by the following motion.
 #
 class Delete extends Operator
-  register: '"'
-  allowEOL: null
+  register: null
 
-  # allowEOL - Determines whether the cursor should be allowed to rest on the
-  #            end of line character or not.
-  constructor: (@editor, @vimState, {@allowEOL, @selectOptions}={}) ->
+  constructor: (@editor, @vimState) ->
     @complete = false
-    @selectOptions ?= {}
-    @selectOptions.requireEOL ?= true
+    @register = settings.defaultRegister()
 
   # Public: Deletes the text selected by the given motion.
   #
@@ -102,83 +84,123 @@ class Delete extends Operator
   #
   # Returns nothing.
   execute: (count) ->
-    cursor = @editor.getLastCursor()
+    if _.contains(@motion.select(count), true)
+      @setTextRegister(@register, @editor.getSelectedText())
+      @editor.transact =>
+        for selection in @editor.getSelections()
+          selection.deleteSelectedText()
+      for cursor in @editor.getCursors()
+        if @motion.isLinewise?()
+          cursor.skipLeadingWhitespace()
+        else
+          cursor.moveLeft() if cursor.isAtEndOfLine() and not cursor.isAtBeginningOfLine()
 
-    if _.contains(@motion.select(count, @selectOptions), true)
-      validSelection = true
+    @vimState.activateNormalMode()
 
-    if validSelection?
-      text = @editor.getSelectedText()
-      @setTextRegister(@register, text)
-
-      @editor.delete()
-      if !@allowEOL and cursor.isAtEndOfLine() and !@motion.isLinewise?()
-        @editor.moveLeft()
-
-    if @motion.isLinewise?()
-      @editor.setCursorScreenPosition([cursor.getScreenRow(), 0])
-
-    @vimState.activateCommandMode()
 #
 # It toggles the case of everything selected by the following motion
 #
 class ToggleCase extends Operator
-
-  constructor: (@editor, @vimState, {@selectOptions}={}) -> @complete = true
+  constructor: (@editor, @vimState, {@complete}={}) ->
 
   execute: (count=1) ->
-    pos = @editor.getCursorBufferPosition()
-    lastCharIndex = @editor.lineTextForBufferRow(pos.row).length - 1
-    count = Math.min count, @editor.lineTextForBufferRow(pos.row).length - pos.column
+    if @motion?
+      if _.contains(@motion.select(count), true)
+        @editor.replaceSelectedText {}, (text) ->
+          text.split('').map((char) ->
+            lower = char.toLowerCase()
+            if char is lower
+              char.toUpperCase()
+            else
+              lower
+          ).join('')
+    else
+      @editor.transact =>
+        for cursor in @editor.getCursors()
+          point = cursor.getBufferPosition()
+          lineLength = @editor.lineTextForBufferRow(point.row).length
+          cursorCount = Math.min(count, lineLength - point.column)
 
-    # Do nothing on an empty line
-    return if @editor.getBuffer().isRowBlank(pos.row)
+          _.times cursorCount, =>
+            point = cursor.getBufferPosition()
+            range = Range.fromPointWithDelta(point, 0, 1)
+            char = @editor.getTextInBufferRange(range)
 
-    @undoTransaction =>
-      _.times count, =>
-        point = @editor.getCursorBufferPosition()
-        range = Range.fromPointWithDelta(point, 0, 1)
-        char = @editor.getTextInBufferRange(range)
+            if char is char.toLowerCase()
+              @editor.setTextInBufferRange(range, char.toUpperCase())
+            else
+              @editor.setTextInBufferRange(range, char.toLowerCase())
 
-        if char is char.toLowerCase()
-          @editor.setTextInBufferRange(range, char.toUpperCase())
-        else
-          @editor.setTextInBufferRange(range, char.toLowerCase())
+            cursor.moveRight() unless point.column >= lineLength - 1
 
-        unless point.column >= lastCharIndex
-          @editor.moveRight()
+    @vimState.activateNormalMode()
 
-    @vimState.activateCommandMode()
+#
+# In visual mode or after `g` with a motion, it makes the selection uppercase
+#
+class UpperCase extends Operator
+  constructor: (@editor, @vimState) ->
+    @complete = false
+
+  execute: (count=1) ->
+    if _.contains(@motion.select(count), true)
+      @editor.replaceSelectedText {}, (text) ->
+        text.toUpperCase()
+
+    @vimState.activateNormalMode()
+
+#
+# In visual mode or after `g` with a motion, it makes the selection lowercase
+#
+class LowerCase extends Operator
+  constructor: (@editor, @vimState) ->
+    @complete = false
+
+  execute: (count=1) ->
+    if _.contains(@motion.select(count), true)
+      @editor.replaceSelectedText {}, (text) ->
+        text.toLowerCase()
+
+    @vimState.activateNormalMode()
 
 #
 # It copies everything selected by the following motion.
 #
 class Yank extends Operator
-  register: '"'
+  register: null
+
+  constructor: (@editor, @vimState) ->
+    @register = settings.defaultRegister()
+
   # Public: Copies the text selected by the given motion.
   #
   # count - The number of times to execute.
   #
   # Returns nothing.
   execute: (count) ->
-    originalPosition = @editor.getCursorScreenPosition()
+    originalPositions = @editor.getCursorBufferPositions()
     if _.contains(@motion.select(count), true)
-      selectedPosition = @editor.getCursorScreenPosition()
-      text = @editor.getLastSelection().getText()
-      originalPosition = Point.min(originalPosition, selectedPosition)
+      text = @editor.getSelectedText()
+      startPositions = _.pluck(@editor.getSelectedBufferRanges(), "start")
+      newPositions = for originalPosition, i in originalPositions
+        if startPositions[i] and (@vimState.mode is 'visual' or not @motion.isLinewise?())
+          Point.min(startPositions[i], originalPositions[i])
+        else
+          originalPosition
     else
       text = ''
+      newPositions = originalPositions
 
     @setTextRegister(@register, text)
 
-    @editor.setCursorScreenPosition(originalPosition)
-    @vimState.activateCommandMode()
+    @editor.setSelectedBufferRanges(newPositions.map (p) -> new Range(p, p))
+    @vimState.activateNormalMode()
 
 #
 # It combines the current line with the following line.
 #
 class Join extends Operator
-  constructor: (@editor, @vimState, {@selectOptions}={}) -> @complete = true
+  constructor: (@editor, @vimState) -> @complete = true
 
   # Public: Combines the current with the following lines
   #
@@ -186,21 +208,21 @@ class Join extends Operator
   #
   # Returns nothing.
   execute: (count=1) ->
-    @undoTransaction =>
+    @editor.transact =>
       _.times count, =>
         @editor.joinLines()
-    @vimState.activateCommandMode()
+    @vimState.activateNormalMode()
 
 #
 # Repeat the last operation
 #
 class Repeat extends Operator
-  constructor: (@editor, @vimState, {@selectOptions}={}) -> @complete = true
+  constructor: (@editor, @vimState) -> @complete = true
 
   isRecordable: -> false
 
   execute: (count=1) ->
-    @undoTransaction =>
+    @editor.transact =>
       _.times count, =>
         cmd = @vimState.history[0]
         cmd?.execute()
@@ -208,19 +230,19 @@ class Repeat extends Operator
 # It creates a mark at the current cursor position
 #
 class Mark extends OperatorWithInput
-  constructor: (@editor, @vimState, {@selectOptions}={}) ->
+  constructor: (@editor, @vimState) ->
     super(@editor, @vimState)
-    @viewModel = new ViewModel(@, class: 'mark', singleChar: true, hidden: true)
+    @viewModel = new ViewModel(this, class: 'mark', singleChar: true, hidden: true)
 
   # Public: Creates the mark in the specified mark register (from user input)
   # at the current position
   #
   # Returns nothing.
-  execute: () ->
+  execute: ->
     @vimState.setMark(@input.characters, @editor.getCursorBufferPosition())
-    @vimState.activateCommandMode()
+    @vimState.activateNormalMode()
 
 module.exports = {
   Operator, OperatorWithInput, OperatorError, Delete, ToggleCase,
-  Yank, Join, Repeat, Mark
+  UpperCase, LowerCase, Yank, Join, Repeat, Mark
 }
