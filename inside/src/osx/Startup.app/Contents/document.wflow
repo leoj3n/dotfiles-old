@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>346</string>
+	<string>409.2</string>
 	<key>AMApplicationVersion</key>
-	<string>2.3</string>
+	<string>2.5</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
@@ -61,11 +61,11 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>defaults write com.zibity.broomstick stats no
+					<string># defaults write com.zibity.broomstick stats no
 
-defaults write com.zibity.broomstick BMIOloginitem "No"
+# defaults write com.zibity.broomstick BMIOloginitem "No"
 
-defaults write com.zibity.broomstick apporder "FreeSpace Tab|Gas Mask|Flux|Caffeine|Spirited Away|WhatPulse|Memory Clean|Freezer|Dropbox|Gitifier|Feeds|TotalSpaces|SlimBatteryMonitor|WhiteClock"
+# defaults write com.zibity.broomstick apporder "FreeSpace Tab|Gas Mask|Flux|Caffeine|Spirited Away|WhatPulse|Memory Clean|Freezer|Dropbox|Gitifier|Feeds|TotalSpaces|SlimBatteryMonitor|WhiteClock"
 
 defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
@@ -186,7 +186,7 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>318.500000:489.000000</string>
+				<string>309.000000:253.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -357,7 +357,7 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>318.500000:306.000000</string>
+				<string>309.000000:436.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -456,9 +456,9 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>318.500000:123.000000</string>
+				<string>309.000000:539.000000</string>
 				<key>nibPath</key>
-				<string>/System/Library/Automator/Launch Application.action/Contents/Resources/English.lproj/main.nib</string>
+				<string>/System/Library/Automator/Launch Application.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
 			<key>isViewVisible</key>
 			<true/>
@@ -466,19 +466,19 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>4892C074-07E9-40BC-AC46-32B9BC239B03</key>
-		<dict>
-			<key>from</key>
-			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
-			<key>to</key>
-			<string>300C1764-9070-475F-A5D4-99A2DE2933DF - 300C1764-9070-475F-A5D4-99A2DE2933DF</string>
-		</dict>
-		<key>DA1A339C-40FF-4EE2-9DFF-A0F121528593</key>
+		<key>0EC65686-3302-4E1F-8022-BDCC3D4E29CB</key>
 		<dict>
 			<key>from</key>
 			<string>9D576F6F-9FA9-45AE-9CFD-5A674BB749F6 - 9D576F6F-9FA9-45AE-9CFD-5A674BB749F6</string>
 			<key>to</key>
 			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
+		</dict>
+		<key>2F8F8955-A247-4E2D-8A20-A6B371850B9F</key>
+		<dict>
+			<key>from</key>
+			<string>FAABE42E-6B65-43DA-B859-938B8E878670 - FAABE42E-6B65-43DA-B859-938B8E878670</string>
+			<key>to</key>
+			<string>300C1764-9070-475F-A5D4-99A2DE2933DF - 300C1764-9070-475F-A5D4-99A2DE2933DF</string>
 		</dict>
 	</dict>
 	<key>workflowMetaData</key>
